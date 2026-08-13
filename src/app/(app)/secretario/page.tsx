@@ -1,12 +1,12 @@
-import { PlaceholderModule } from "@/components/PlaceholderModule";
+import { auth } from "@/lib/auth";
+import { getSettings } from "@/lib/settings";
+import { loadSecretario } from "./data-actions";
+import { SecretarioApp } from "./SecretarioApp";
 
-export default function SecretarioPage() {
-  return (
-    <PlaceholderModule
-      title="Secretario"
-      subtitle="Cuaderno del Secretario"
-      tone="water-mid"
-      note="Este módulo se migra en la Fase 2, a partir del prototipo de referencia (agenda, minutas, asignaciones, ministración, entrevistas, consejo, clases, llamamientos en consideración y rotaciones)."
-    />
-  );
+export default async function SecretarioPage() {
+  const session = await auth();
+  const userId = session!.user!.email!;
+  const [settings, data] = await Promise.all([getSettings(userId), loadSecretario()]);
+
+  return <SecretarioApp initialData={data} roles={settings.roles} />;
 }
