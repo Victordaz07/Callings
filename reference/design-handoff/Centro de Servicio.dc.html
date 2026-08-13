@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#EDE6D6; color:#1E2C2A; font-family:Karla, system-ui, sans-serif; }
+  a { color:#2F8F92; text-decoration:none; }
+  a:hover { color:#E07856; }
+  @keyframes ripple { 0%{transform:scale(.6);opacity:.85} 100%{transform:scale(1.9);opacity:0} }
+</style>
+</helmet>
+
+<section style="padding:56px 56px 96px; display:flex; flex-direction:column; gap:40px">
+
+  <div style="display:flex; flex-direction:column; gap:10px; max-width:760px">
+    <div style="font-family:Karla; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:#2F8F92; font-weight:700">Turno 1 · Llamados</div>
+    <h1 style="font-family:Fraunces, serif; font-weight:600; font-size:40px; line-height:1.1; margin:0; color:#0E3B43">PWA de herramientas de servicio</h1>
+    <p style="margin:0; font-size:16px; line-height:1.6; color:#42544F; text-wrap:pretty">Cascarón unificado con identidad Gather: nav inferior fija, safe areas, targets de 44px, estados offline. BautizApp conserva sus temas solo dentro del producto que genera.</p>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:44px; align-items:flex-start">
+
+    <!-- 1a HOME -->
+    <div id="1a" style="display:flex; flex-direction:column; gap:12px">
+      <div style="display:flex; align-items:center; gap:10px">
+        <span style="font-family:Karla; font-weight:700; font-size:11px; letter-spacing:.12em; background:#0E3B43; color:#F7F1E4; padding:5px 9px; border-radius:6px">1a</span>
+        <span style="font-family:Fraunces,serif; font-size:17px; color:#0E3B43">Inicio · Dashboard</span>
+      </div>
+      <div style="width:390px; height:844px; border-radius:38px; background:#F7F1E4; overflow:hidden; box-shadow:0 30px 60px -20px rgba(14,59,67,.35), 0 0 0 1px rgba(14,59,67,.10); display:flex; flex-direction:column; position:relative">
+
+        <div style="background:#0E3B43; color:#F7F1E4; padding:14px 22px 20px; position:relative; overflow:hidden">
+          <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:600; letter-spacing:.02em; padding-bottom:16px; opacity:.9">
+            <span>9:41</span><span>▮▮▮ ⌁ ▰</span>
+          </div>
+          <sc-if value="{{ showRings }}" hint-placeholder-val="{{ true }}">
+            <svg width="200" height="200" viewBox="0 0 200 200" style="position:absolute; right:-58px; top:-38px; opacity:.20">
+              <circle cx="100" cy="100" r="28" fill="none" stroke="#DCEAE8" stroke-width="1.5"></circle>
+              <circle cx="100" cy="100" r="50" fill="none" stroke="#DCEAE8" stroke-width="1.5"></circle>
+              <circle cx="100" cy="100" r="72" fill="none" stroke="#DCEAE8" stroke-width="1.5"></circle>
+              <circle cx="100" cy="100" r="94" fill="none" stroke="#DCEAE8" stroke-width="1.5"></circle>
+            </svg>
+          </sc-if>
+          <div style="font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:#7FB8B4; font-weight:700">Domingo 16 de agosto</div>
+          <div style="font-family:Fraunces,serif; font-size:29px; line-height:1.15; margin-top:6px; font-weight:500">Buenas tardes,<br>hermano Rivas</div>
+          <div style="margin-top:14px; display:flex; gap:8px; flex-wrap:wrap">
+            <span style="font-size:12px; font-weight:600; background:rgba(220,234,232,.16); border:1px solid rgba(220,234,232,.28); padding:6px 11px; border-radius:999px">{{ unitName }}</span>
+            <span style="font-size:12px; font-weight:600; background:rgba(220,234,232,.16); border:1px solid rgba(220,234,232,.28); padding:6px 11px; border-radius:999px">Secretario · Líder misional</span>
+          </div>
+        </div>
+
+        <sc-if value="{{ showOffline }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex; align-items:center; gap:10px; background:#F0E2C8; border-bottom:1px solid #E0CFAE; padding:10px 22px; font-size:13px; color:#7A5A20; font-weight:500">
+            <span style="width:8px; height:8px; border-radius:99px; background:#C08A3E; flex:none"></span>
+            Sin conexión — tus cambios se sincronizarán solos.
+          </div>
+        </sc-if>
+
+        <div style="flex:1; overflow:hidden; padding:20px 22px 0; display:flex; flex-direction:column; gap:16px">
+
+          <div style="background:#FFFFFF; border:1px solid #E4DBC7; border-radius:20px; padding:18px 18px 14px; display:flex; flex-direction:column; gap:14px; box-shadow:0 2px 0 rgba(14,59,67,.04)">
+            <div style="display:flex; justify-content:space-between; align-items:baseline">
+              <span style="font-family:Fraunces,serif; font-size:19px; color:#0E3B43; font-weight:600">Hoy</span>
+              <span style="font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#2F8F92">3 pendientes</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:12px">
+              <div style="display:flex; gap:12px; align-items:flex-start">
+                <span style="font-variant-numeric:tabular-nums; font-size:13px; font-weight:700; color:#1B5560; width:52px; flex:none; padding-top:2px">2:30 pm</span>
+                <div style="display:flex; flex-direction:column; gap:2px">
+                  <span style="font-size:15px; font-weight:600">Consejo de barrio</span>
+                  <span style="font-size:13px; color:#6A7B77">Salón del obispado · minuta sin abrir</span>
+                </div>
+              </div>
+              <div style="height:1px; background:#EFE7D6"></div>
+              <div style="display:flex; gap:12px; align-items:flex-start">
+                <span style="font-variant-numeric:tabular-nums; font-size:13px; font-weight:700; color:#1B5560; width:52px; flex:none; padding-top:2px">4:00 pm</span>
+                <div style="display:flex; flex-direction:column; gap:2px">
+                  <span style="font-size:15px; font-weight:600">Entrevista · Fam. Solís</span>
+                  <span style="font-size:13px; color:#6A7B77">Con el obispo · confirmada</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:0 2px">
+              <span style="font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:#6A7B77">Tus herramientas</span>
+            </div>
+
+            <div style="background:#FFFFFF; border:1px solid #E4DBC7; border-left:none; border-radius:20px; padding:16px 18px; display:flex; gap:14px; align-items:center; position:relative; overflow:hidden">
+              <span style="position:absolute; left:0; top:0; bottom:0; width:5px; background:#1B5560"></span>
+              <div style="flex:1; display:flex; flex-direction:column; gap:4px; padding-left:4px">
+                <span style="font-family:Fraunces,serif; font-size:18px; font-weight:600; color:#0E3B43">Secretario</span>
+                <span style="font-size:13px; color:#6A7B77">2 minutas por cerrar · 5 asignaciones vencen esta semana</span>
+              </div>
+              <span style="min-width:30px; height:30px; border-radius:99px; background:#A13F2E; color:#F7F1E4; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:0 8px">7</span>
+            </div>
+
+            <div style="background:#FFFFFF; border:1px solid #E4DBC7; border-left:none; border-radius:20px; padding:16px 18px; display:flex; gap:14px; align-items:center; position:relative; overflow:hidden">
+              <span style="position:absolute; left:0; top:0; bottom:0; width:5px; background:#2F8F92"></span>
+              <div style="flex:1; display:flex; flex-direction:column; gap:6px; padding-left:4px">
+                <span style="font-family:Fraunces,serif; font-size:18px; font-weight:600; color:#0E3B43">Gather</span>
+                <span style="font-size:13px; color:#6A7B77">9 personas en enseñanza</span>
+                <div style="display:flex; gap:6px; align-items:center; margin-top:2px">
+                  <span style="display:flex; align-items:center; gap:5px; font-size:12px; font-weight:600; color:#42544F"><span style="width:9px;height:9px;border-radius:99px;background:#5F8F6B"></span>5</span>
+                  <span style="display:flex; align-items:center; gap:5px; font-size:12px; font-weight:600; color:#42544F"><span style="width:9px;height:9px;border-radius:99px;background:#C08A3E"></span>3</span>
+                  <span style="display:flex; align-items:center; gap:5px; font-size:12px; font-weight:600; color:#42544F"><span style="width:9px;height:9px;border-radius:99px;background:#A13F2E"></span>1</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="background:#FFFFFF; border:1px solid #E4DBC7; border-left:none; border-radius:20px; padding:16px 18px; display:flex; gap:14px; align-items:center; position:relative; overflow:hidden">
+              <span style="position:absolute; left:0; top:0; bottom:0; width:5px; background:#E07856"></span>
+              <div style="flex:1; display:flex; flex-direction:column; gap:4px; padding-left:4px">
+                <span style="font-family:Fraunces,serif; font-size:18px; font-weight:600; color:#0E3B43">BautizApp</span>
+                <span style="font-size:13px; color:#6A7B77">Bautismo de Ana Solís · sáb 22 · programa a medias</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF; border-top:1px solid #E4DBC7; padding:10px 8px 26px; display:grid; grid-template-columns:repeat(5,1fr); gap:2px">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; min-height:44px; color:#0E3B43">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="9" width="16" height="12" rx="2"></rect><path d="M3 10l9-6 9 6"></path></svg>
+            <span style="font-size:11px; font-weight:700">Inicio</span>
+            <span style="width:18px; height:3px; border-radius:9px; background:#E07856"></span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; min-height:44px; color:#93A3A0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M8 9h8M8 13h8M8 17h4"></path></svg>
+            <span style="font-size:11px; font-weight:600">Secretario</span>
+            <span style="width:18px; height:3px; border-radius:9px; background:transparent"></span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; min-height:44px; color:#93A3A0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"></circle><circle cx="12" cy="12" r="8"></circle></svg>
+            <span style="font-size:11px; font-weight:600">Gather</span>
+            <span style="width:18px; height:3px; border-radius:9px; background:transparent"></span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; min-height:44px; color:#93A3A0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3c4 5 6 7.5 6 10a6 6 0 0 1-12 0c0-2.5 2-5 6-10z"></path></svg>
+            <span style="font-size:11px; font-weight:600">Bautizos</span>
+            <span style="width:18px; height:3px; border-radius:9px; background:transparent"></span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; min-height:44px; color:#93A3A0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h16M4 16h16"></path><circle cx="10" cy="8" r="2.4" fill="#F7F1E4"></circle><circle cx="15" cy="16" r="2.4" fill="#F7F1E4"></circle></svg>
+            <span style="font-size:11px; font-weight:600">Ajustes</span>
+            <span style="width:18px; height:3px; border-radius:9px; background:transparent"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1b SECRETARIO -->
+    <div id="1b" style="display:flex; flex-direction:column; gap:12px">
+      <div style="display:flex; align-items:center; gap:10px">
+        <span style="font-family:Karla; font-weight:700; font-size:11px; letter-spacing:.12em; background:#0E3B43; color:#F7F1E4; padding:5px 9px; border-radius:6px">1b</span>
+        <span style="font-family:Fraunces,serif; font-size:17px; color:#0E3B43">Secretario · Hoy</span>
+      </div>
+      <div style="width:390px; height:844px; border-radius:38px; background:#F7F1E4; overflow:hidden; box-shadow:0 30px 60px -20px rgba(14,59,67,.35), 0 0 0 1px rgba(14,59,67,.10); display:flex; flex-direction:column">
+
+        <div style="background:#1B5560; color:#F7F1E4; padding:14px 20px 0">
+          <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:600; padding-bottom:14px; opacity:.9"><span>9:41</span><span>▮▮▮ ⌁ ▰</span></div>
+          <div style="display:flex; align-items:center; gap:12px; padding-bottom:12px">
+            <div style="width:44px; height:44px; margin-left:-10px; display:flex; align-items:center; justify-content:center">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F7F1E4" stroke-width="2"><path d="M15 5l-7 7 7 7"></path></svg>
+            </div>
+            <div style="flex:1">
+              <div style="font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#9BC7C4; font-weight:700">Secretario</div>
+              <div style="font-family:Fraunces,serif; font-size:24px; font-weight:500; line-height:1.2">Hoy</div>
+            </div>
+            <div style="width:44px; height:44px; display:flex; align-items:center; justify-content:center; margin-right:-10px">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F7F1E4" stroke-width="2"><circle cx="12" cy="5" r="1.5"></circle><circle cx="12" cy="12" r="1.5"></circle><circle cx="12" cy="19" r="1.5"></circle></svg>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; overflow:hidden; padding-bottom:12px">
+            <span style="font-size:13px; font-weight:700; background:#F7F1E4; color:#0E3B43; padding:9px 15px; border-radius:999px; white-space:nowrap">Hoy</span>
+            <span style="font-size:13px; font-weight:600; background:rgba(247,241,228,.14); border:1px solid rgba(247,241,228,.24); padding:9px 15px; border-radius:999px; white-space:nowrap">Agenda</span>
+            <span style="font-size:13px; font-weight:600; background:rgba(247,241,228,.14); border:1px solid rgba(247,241,228,.24); padding:9px 15px; border-radius:999px; white-space:nowrap">Minutas</span>
+            <span style="font-size:13px; font-weight:600; background:rgba(247,241,228,.14); border:1px solid rgba(247,241,228,.24); padding:9px 15px; border-radius:999px; white-space:nowrap">Asigna…</span>
+          </div>
+        </div>
+
+        <div style="flex:1; overflow:hidden; padding:20px 22px 0; display:flex; flex-direction:column; gap:18px">
+
+          <div style="display:flex; flex-direction:column; gap:10px">
+            <span style="font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:#6A7B77">Reuniones de hoy</span>
+            <div style="display:flex; gap:14px">
+              <div style="display:flex; flex-direction:column; align-items:center; width:52px; flex:none; padding-top:4px">
+                <span style="font-size:13px; font-weight:700; color:#1B5560; font-variant-numeric:tabular-nums">2:30</span>
+                <span style="flex:1; width:2px; background:#DCEAE8; margin-top:8px"></span>
+              </div>
+              <div style="flex:1; background:#FFFFFF; border:1px solid #E4DBC7; border-radius:18px; padding:16px; display:flex; flex-direction:column; gap:10px">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px">
+                  <span style="font-family:Fraunces,serif; font-size:18px; font-weight:600; color:#0E3B43">Consejo de barrio</span>
+                  <span style="font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; background:#F3E4D9; color:#A6512F; padding:5px 9px; border-radius:7px; white-space:nowrap">En curso</span>
+                </div>
+                <span style="font-size:13px; color:#6A7B77">6 asistentes esperados · 4 temas en el orden del día</span>
+                <div style="display:flex; gap:10px; margin-top:2px">
+                  <span style="flex:1; text-align:center; background:#0E3B43; color:#F7F1E4; font-size:14px; font-weight:700; padding:13px; border-radius:12px">Abrir minuta</span>
+                  <span style="width:48px; display:flex; align-items:center; justify-content:center; border:1.5px solid #C9D9D6; border-radius:12px; color:#1B5560; font-weight:700">＋</span>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex; gap:14px">
+              <div style="width:52px; flex:none; text-align:center; padding-top:16px">
+                <span style="font-size:13px; font-weight:700; color:#1B5560; font-variant-numeric:tabular-nums">4:00</span>
+              </div>
+              <div style="flex:1; background:#FFFFFF; border:1px solid #E4DBC7; border-radius:18px; padding:14px 16px; display:flex; flex-direction:column; gap:4px">
+                <span style="font-family:Fraunces,serif; font-size:17px; font-weight:600; color:#0E3B43">Entrevista · Fam. Solís</span>
+                <span style="font-size:13px; color:#6A7B77">Con el obispo · recomendación para el templo</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:10px">
+            <div style="display:flex; justify-content:space-between; align-items:center">
+              <span style="font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:#6A7B77">Asignaciones que vencen</span>
+              <span style="font-size:13px; font-weight:700; color:#2F8F92">Ver todas</span>
+            </div>
+            <div style="background:#FFFFFF; border:1px solid #E4DBC7; border-radius:18px; overflow:hidden">
+              <div style="display:flex; align-items:center; gap:12px; padding:14px 16px; min-height:44px">
+                <span style="width:22px; height:22px; border-radius:7px; border:1.8px solid #B9C9C5; flex:none"></span>
+                <div style="flex:1; display:flex; flex-direction:column; gap:2px">
+                  <span style="font-size:15px; font-weight:600">Confirmar oradores del domingo</span>
+                  <span style="font-size:12.5px; color:#A13F2E; font-weight:600">Vence hoy · Hno. Peña</span>
+                </div>
+              </div>
+              <div style="height:1px; background:#EFE7D6; margin-left:50px"></div>
+              <div style="display:flex; align-items:center; gap:12px; padding:14px 16px; min-height:44px">
+                <span style="width:22px; height:22px; border-radius:7px; border:1.8px solid #B9C9C5; flex:none"></span>
+                <div style="flex:1; display:flex; flex-direction:column; gap:2px">
+                  <span style="font-size:15px; font-weight:600">Enviar reporte trimestral</span>
+                  <span style="font-size:12.5px; color:#C08A3E; font-weight:600">En 2 días · Tú</span>
+                </div>
+              </div>
+              <div style="height:1px; background:#EFE7D6; margin-left:50px"></div>
+              <div style="display:flex; align-items:center; gap:12px; padding:14px 16px; min-height:44px; opacity:.55">
+                <span style="width:22px; height:22px; border-radius:7px; background:#5F8F6B; flex:none; display:flex; align-items:center; justify-content:center; color:#F7F1E4; font-size:13px; font-weight:800">✓</span>
+                <div style="flex:1; display:flex; flex-direction:column; gap:2px">
+                  <span style="font-size:15px; font-weight:600; text-decoration:line-through">Actualizar rotación de oraciones</span>
+                  <span style="font-size:12.5px; color:#6A7B77">Completada</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF; border-top:1px solid #E4DBC7; padding:10px 8px 26px; display:grid; grid-template-columns:repeat(5,1fr); gap:2px">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; color:#93A3A0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="9" width="16" height="12" rx="2"></rect><path d="M3 10l9-6 9 6"></path></svg>
+            <span style="font-size:11px; font-weight:600">Inicio</span>
+            <span style="width:18px; height:3px; border-radius:9px; background:transparent"></span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; color:#0E3B43">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M8 9h8M8 13h8M8 17h4"></path></svg>
+            <span style="font-size:11px; font-weight:700">Secretario</span>
+            <span style="width:18px; height:3px; border-radius:9px; background:#E07856"></span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; color:#93A3A0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"></circle><circle cx="12" cy="12" r="8"></circle></svg>
+            <span style="font-size:11px; font-weight:600">Gather</span>
+            <span style="width:18px; height:3px; border-radius:9px; background:transparent"></span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; color:#93A3A0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3c4 5 6 7.5 6 10a6 6 0 0 1-12 0c0-2.5 2-5 6-10z"></path></svg>
+            <span style="font-size:11px; font-weight:600">Bautizos</span>
+            <span style="width:18px; height:3px; border-radius:9px; background:transparent"></span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; color:#93A3A0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h16M4 16h16"></path><circle cx="10" cy="8" r="2.4" fill="#FFFFFF"></circle><circle cx="15" cy="16" r="2.4" fill="#FFFFFF"></circle></svg>
+            <span style="font-size:11px; font-weight:600">Ajustes</span>
+            <span style="width:18px; height:3px; border-radius:9px; background:transparent"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1c AJUSTES -->
+    <div id="1c" style="display:flex; flex-direction:column; gap:12px">
+      <div style="display:flex; align-items:center; gap:10px">
+        <span style="font-family:Karla; font-weight:700; font-size:11px; letter-spacing:.12em; background:#0E3B43; color:#F7F1E4; padding:5px 9px; border-radius:6px">1c</span>
+        <span style="font-family:Fraunces,serif; font-size:17px; color:#0E3B43">Ajustes compartidos</span>
+      </div>
+      <div style="width:390px; height:844px; border-radius:38px; background:#F7F1E4; overflow:hidden; box-shadow:0 30px 60px -20px rgba(14,59,67,.35), 0 0 0 1px rgba(14,59,67,.10); display:flex; flex-direction:column">
+
+        <div style="background:#0E3B43; color:#F7F1E4; padding:14px 22px 18px">
+          <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:600; padding-bottom:16px; opacity:.9"><span>9:41</span><span>▮▮▮ ⌁ ▰</span></div>
+          <div style="font-family:Fraunces,serif; font-size:26px; font-weight:500">Ajustes</div>
+          <div style="font-size:13.5px; color:#9BC7C4; margin-top:4px">Se usan en Secretario, Gather y BautizApp.</div>
+        </div>
+
+        <div style="flex:1; overflow:hidden; padding:20px 22px 0; display:flex; flex-direction:column; gap:20px">
+
+          <div style="display:flex; flex-direction:column; gap:10px">
+            <span style="font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:#6A7B77">Unidad</span>
+            <div style="background:#FFFFFF; border:1px solid #E4DBC7; border-radius:18px; padding:6px 16px">
+              <div style="padding:12px 0; display:flex; flex-direction:column; gap:5px">
+                <span style="font-size:12px; font-weight:700; color:#6A7B77; letter-spacing:.04em">Barrio o rama</span>
+                <span style="font-size:16px; font-weight:600; color:#1E2C2A">{{ unitName }}</span>
+              </div>
+              <div style="height:1px; background:#EFE7D6"></div>
+              <div style="padding:12px 0; display:flex; flex-direction:column; gap:5px">
+                <span style="font-size:12px; font-weight:700; color:#6A7B77; letter-spacing:.04em">Estaca o distrito</span>
+                <span style="font-size:16px; font-weight:600; color:#1E2C2A">Estaca Valle Verde</span>
+              </div>
+              <div style="height:1px; background:#EFE7D6"></div>
+              <div style="padding:12px 0; display:flex; flex-direction:column; gap:5px">
+                <span style="font-size:12px; font-weight:700; color:#6A7B77; letter-spacing:.04em">Misión</span>
+                <span style="font-size:16px; font-weight:600; color:#1E2C2A">Misión México Cuautitlán</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:10px">
+            <span style="font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:#6A7B77">Liderazgo</span>
+            <div style="background:#FFFFFF; border:1px solid #E4DBC7; border-radius:18px; padding:6px 16px">
+              <div style="padding:12px 0; display:flex; align-items:center; gap:12px; min-height:44px">
+                <div style="flex:1; display:flex; flex-direction:column; gap:3px">
+                  <span style="font-size:12px; font-weight:700; color:#6A7B77">Obispo / presidente</span>
+                  <span style="font-size:16px; font-weight:600">Obispo Daniel Herrera</span>
+                </div>
+                <span style="color:#93A3A0; font-size:20px">›</span>
+              </div>
+              <div style="height:1px; background:#EFE7D6"></div>
+              <div style="padding:12px 0; display:flex; align-items:center; gap:12px; min-height:44px">
+                <div style="flex:1; display:flex; flex-direction:column; gap:3px">
+                  <span style="font-size:12px; font-weight:700; color:#6A7B77">Líder misional de barrio</span>
+                  <span style="font-size:16px; font-weight:600">Hno. Ismael Rivas</span>
+                </div>
+                <span style="color:#93A3A0; font-size:20px">›</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:10px">
+            <span style="font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:#6A7B77">Mis llamamientos</span>
+            <div style="background:#FFFFFF; border:1px solid #E4DBC7; border-radius:18px; padding:6px 16px">
+              <div style="padding:13px 0; display:flex; align-items:center; gap:12px">
+                <span style="flex:1; font-size:16px; font-weight:600">Secretario de barrio</span>
+                <span style="width:50px; height:30px; border-radius:99px; background:#2F8F92; display:flex; align-items:center; justify-content:flex-end; padding:3px; box-sizing:border-box"><span style="width:24px; height:24px; border-radius:99px; background:#F7F1E4"></span></span>
+              </div>
+              <div style="height:1px; background:#EFE7D6"></div>
+              <div style="padding:13px 0; display:flex; align-items:center; gap:12px">
+                <span style="flex:1; font-size:16px; font-weight:600">Líder misional</span>
+                <span style="width:50px; height:30px; border-radius:99px; background:#2F8F92; display:flex; align-items:center; justify-content:flex-end; padding:3px; box-sizing:border-box"><span style="width:24px; height:24px; border-radius:99px; background:#F7F1E4"></span></span>
+              </div>
+              <div style="height:1px; background:#EFE7D6"></div>
+              <div style="padding:13px 0; display:flex; align-items:center; gap:12px">
+                <span style="flex:1; font-size:16px; font-weight:600; color:#6A7B77">Maestro de Escuela Dominical</span>
+                <span style="width:50px; height:30px; border-radius:99px; background:#DCEAE8; display:flex; align-items:center; padding:3px; box-sizing:border-box"><span style="width:24px; height:24px; border-radius:99px; background:#FFFFFF; box-shadow:0 1px 3px rgba(14,59,67,.2)"></span></span>
+              </div>
+            </div>
+            <span style="font-size:12.5px; color:#6A7B77; line-height:1.5; padding:0 4px">Los llamamientos activos deciden qué secciones aparecen en Secretario.</span>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF; border-top:1px solid #E4DBC7; padding:10px 8px 26px; display:grid; grid-template-columns:repeat(5,1fr); gap:2px">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; color:#93A3A0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="9" width="16" height="12" rx="2"></rect><path d="M3 10l9-6 9 6"></path></svg>
+            <span style="font-size:11px; font-weight:600">Inicio</span>
+            <span style="width:18px; height:3px; border-radius:9px; background:transparent"></span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; color:#93A3A0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M8 9h8M8 13h8M8 17h4"></path></svg>
+            <span style="font-size:11px; font-weight:600">Secretario</span>
+            <span style="width:18px; height:3px; border-radius:9px; background:transparent"></span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; color:#93A3A0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"></circle><circle cx="12" cy="12" r="8"></circle></svg>
+            <span style="font-size:11px; font-weight:600">Gather</span>
+            <span style="width:18px; height:3px; border-radius:9px; background:transparent"></span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; color:#93A3A0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3c4 5 6 7.5 6 10a6 6 0 0 1-12 0c0-2.5 2-5 6-10z"></path></svg>
+            <span style="font-size:11px; font-weight:600">Bautizos</span>
+            <span style="width:18px; height:3px; border-radius:9px; background:transparent"></span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; color:#0E3B43">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h16M4 16h16"></path><circle cx="10" cy="8" r="2.4" fill="#FFFFFF"></circle><circle cx="15" cy="16" r="2.4" fill="#FFFFFF"></circle></svg>
+            <span style="font-size:11px; font-weight:700">Ajustes</span>
+            <span style="width:18px; height:3px; border-radius:9px; background:#E07856"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1d SPLASH / ICONO -->
+    <div id="1d" style="display:flex; flex-direction:column; gap:12px">
+      <div style="display:flex; align-items:center; gap:10px">
+        <span style="font-family:Karla; font-weight:700; font-size:11px; letter-spacing:.12em; background:#0E3B43; color:#F7F1E4; padding:5px 9px; border-radius:6px">1d</span>
+        <span style="font-family:Fraunces,serif; font-size:17px; color:#0E3B43">Ícono e instalación</span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px">
+        <div style="width:390px; height:844px; border-radius:38px; overflow:hidden; box-shadow:0 30px 60px -20px rgba(14,59,67,.35), 0 0 0 1px rgba(14,59,67,.10); background:#0E3B43; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:30px; position:relative">
+          <svg width="620" height="620" viewBox="0 0 620 620" style="position:absolute; opacity:.16">
+            <circle cx="310" cy="310" r="70" fill="none" stroke="#DCEAE8" stroke-width="2"></circle>
+            <circle cx="310" cy="310" r="130" fill="none" stroke="#DCEAE8" stroke-width="2"></circle>
+            <circle cx="310" cy="310" r="195" fill="none" stroke="#DCEAE8" stroke-width="2"></circle>
+            <circle cx="310" cy="310" r="265" fill="none" stroke="#DCEAE8" stroke-width="2"></circle>
+          </svg>
+          <div style="width:118px; height:118px; border-radius:30px; background:#F7F1E4; display:flex; align-items:center; justify-content:center; box-shadow:0 18px 40px -12px rgba(0,0,0,.5); position:relative">
+            <svg width="76" height="76" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="9" fill="#E07856"></circle>
+              <circle cx="50" cy="50" r="21" fill="none" stroke="#2F8F92" stroke-width="4.5"></circle>
+              <circle cx="50" cy="50" r="34" fill="none" stroke="#1B5560" stroke-width="3.5"></circle>
+              <circle cx="50" cy="50" r="45" fill="none" stroke="#0E3B43" stroke-width="2.5" opacity=".5"></circle>
+            </svg>
+          </div>
+          <div style="text-align:center; position:relative">
+            <div style="font-family:Fraunces,serif; font-size:34px; color:#F7F1E4; font-weight:500">Llamados</div>
+            <div style="font-size:14px; letter-spacing:.16em; text-transform:uppercase; color:#7FB8B4; font-weight:700; margin-top:8px">Secretario · Gather · Bautizos</div>
+          </div>
+          <div style="position:absolute; bottom:54px; left:0; right:0; display:flex; justify-content:center">
+            <div style="display:flex; align-items:center; gap:12px; background:rgba(247,241,228,.10); border:1px solid rgba(247,241,228,.22); padding:12px 18px; border-radius:14px">
+              <span style="width:34px; height:34px; border-radius:10px; background:#F7F1E4; display:flex; align-items:center; justify-content:center">
+                <svg width="20" height="20" viewBox="0 0 100 100"><circle cx="50" cy="50" r="10" fill="#E07856"></circle><circle cx="50" cy="50" r="26" fill="none" stroke="#2F8F92" stroke-width="6"></circle><circle cx="50" cy="50" r="42" fill="none" stroke="#1B5560" stroke-width="5"></circle></svg>
+              </span>
+              <span style="color:#F7F1E4; font-size:14px; font-weight:600">Instalar en pantalla de inicio</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:18px; align-items:center; flex-wrap:wrap">
+          <div style="width:104px; height:104px; border-radius:24px; background:#0E3B43; display:flex; align-items:center; justify-content:center">
+            <svg width="66" height="66" viewBox="0 0 100 100"><circle cx="50" cy="50" r="9" fill="#E07856"></circle><circle cx="50" cy="50" r="22" fill="none" stroke="#2F8F92" stroke-width="5"></circle><circle cx="50" cy="50" r="35" fill="none" stroke="#DCEAE8" stroke-width="4"></circle><circle cx="50" cy="50" r="46" fill="none" stroke="#DCEAE8" stroke-width="2.5" opacity=".45"></circle></svg>
+          </div>
+          <div style="width:104px; height:104px; border-radius:99px; background:#F7F1E4; border:1px solid #E4DBC7; display:flex; align-items:center; justify-content:center">
+            <svg width="66" height="66" viewBox="0 0 100 100"><circle cx="50" cy="50" r="9" fill="#E07856"></circle><circle cx="50" cy="50" r="22" fill="none" stroke="#2F8F92" stroke-width="5"></circle><circle cx="50" cy="50" r="35" fill="none" stroke="#1B5560" stroke-width="4"></circle></svg>
+          </div>
+          <div style="width:104px; height:104px; border-radius:24px; background:#F7F1E4; border:1px solid #E4DBC7; display:flex; align-items:center; justify-content:center">
+            <svg width="46" height="46" viewBox="0 0 100 100"><circle cx="50" cy="50" r="12" fill="#E07856"></circle><circle cx="50" cy="50" r="30" fill="none" stroke="#0E3B43" stroke-width="7"></circle></svg>
+          </div>
+          <div style="max-width:230px; font-size:13px; color:#4A5C58; line-height:1.6">Monocromo sobre deep-water para Android adaptativo; versión clara para el splash de iOS; marca reducida a un anillo para favicon 32px.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1e SISTEMA DE COMPONENTES -->
+    <div id="1e" style="display:flex; flex-direction:column; gap:12px; width:520px">
+      <div style="display:flex; align-items:center; gap:10px">
+        <span style="font-family:Karla; font-weight:700; font-size:11px; letter-spacing:.12em; background:#0E3B43; color:#F7F1E4; padding:5px 9px; border-radius:6px">1e</span>
+        <span style="font-family:Fraunces,serif; font-size:17px; color:#0E3B43">Sistema de componentes</span>
+      </div>
+
+      <div style="background:#F7F1E4; border:1px solid #E4DBC7; border-radius:28px; padding:28px; display:flex; flex-direction:column; gap:26px">
+
+        <div style="display:flex; flex-direction:column; gap:12px">
+          <span style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:700; color:#6A7B77">Color</span>
+          <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:10px">
+            <div style="display:flex; flex-direction:column; gap:6px"><span style="height:52px; border-radius:12px; background:#0E3B43"></span><span style="font-size:11px; font-weight:700">deep-water</span><span style="font-size:10.5px; color:#6A7B77; font-family:ui-monospace,monospace">#0E3B43</span></div>
+            <div style="display:flex; flex-direction:column; gap:6px"><span style="height:52px; border-radius:12px; background:#1B5560"></span><span style="font-size:11px; font-weight:700">water-mid</span><span style="font-size:10.5px; color:#6A7B77; font-family:ui-monospace,monospace">#1B5560</span></div>
+            <div style="display:flex; flex-direction:column; gap:6px"><span style="height:52px; border-radius:12px; background:#2F8F92"></span><span style="font-size:11px; font-weight:700">living-teal</span><span style="font-size:10.5px; color:#6A7B77; font-family:ui-monospace,monospace">#2F8F92</span></div>
+            <div style="display:flex; flex-direction:column; gap:6px"><span style="height:52px; border-radius:12px; background:#E07856"></span><span style="font-size:11px; font-weight:700">dawn-coral</span><span style="font-size:10.5px; color:#6A7B77; font-family:ui-monospace,monospace">#E07856</span></div>
+            <div style="display:flex; flex-direction:column; gap:6px"><span style="height:52px; border-radius:12px; background:#DCEAE8; border:1px solid #C9D9D6"></span><span style="font-size:11px; font-weight:700">mist</span><span style="font-size:10.5px; color:#6A7B77; font-family:ui-monospace,monospace">#DCEAE8</span></div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:10px">
+            <div style="display:flex; flex-direction:column; gap:6px"><span style="height:34px; border-radius:10px; background:#F7F1E4; border:1px solid #E4DBC7"></span><span style="font-size:10.5px; color:#6A7B77; font-family:ui-monospace,monospace">linen</span></div>
+            <div style="display:flex; flex-direction:column; gap:6px"><span style="height:34px; border-radius:10px; background:#1E2C2A"></span><span style="font-size:10.5px; color:#6A7B77; font-family:ui-monospace,monospace">ink</span></div>
+            <div style="display:flex; flex-direction:column; gap:6px"><span style="height:34px; border-radius:10px; background:#5F8F6B"></span><span style="font-size:10.5px; color:#6A7B77; font-family:ui-monospace,monospace">sage</span></div>
+            <div style="display:flex; flex-direction:column; gap:6px"><span style="height:34px; border-radius:10px; background:#C08A3E"></span><span style="font-size:10.5px; color:#6A7B77; font-family:ui-monospace,monospace">amber</span></div>
+            <div style="display:flex; flex-direction:column; gap:6px"><span style="height:34px; border-radius:10px; background:#A13F2E"></span><span style="font-size:10.5px; color:#6A7B77; font-family:ui-monospace,monospace">alert</span></div>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:12px">
+          <span style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:700; color:#6A7B77">Tipografía</span>
+          <div style="display:flex; flex-direction:column; gap:8px; background:#FFFFFF; border:1px solid #E4DBC7; border-radius:18px; padding:18px">
+            <span style="font-family:Fraunces,serif; font-size:28px; font-weight:500; color:#0E3B43; line-height:1.15">Fraunces 500 · 28/32<br><span style="font-size:20px">Títulos y nombres de personas</span></span>
+            <div style="height:1px; background:#EFE7D6; margin:6px 0"></div>
+            <span style="font-size:16px; line-height:1.55">Karla 400 · 16/25 — cuerpo y listas</span>
+            <span style="font-size:13px; color:#6A7B77">Karla 400 · 13 — secundario y metadatos</span>
+            <span style="font-size:11px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:#6A7B77">Karla 700 · 11 · tracking .14em — etiquetas</span>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:12px">
+          <span style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:700; color:#6A7B77">Botones · alto 48px, radio 12px</span>
+          <div style="display:flex; gap:10px; flex-wrap:wrap">
+            <span style="background:#0E3B43; color:#F7F1E4; font-size:15px; font-weight:700; padding:14px 22px; border-radius:12px">Primario</span>
+            <span style="background:#E07856; color:#FFF7F1; font-size:15px; font-weight:700; padding:14px 22px; border-radius:12px">Acento</span>
+            <span style="border:1.5px solid #C9D9D6; color:#0E3B43; font-size:15px; font-weight:700; padding:13px 22px; border-radius:12px; background:#FFFFFF">Secundario</span>
+            <span style="color:#2F8F92; font-size:15px; font-weight:700; padding:14px 10px">Terciario</span>
+            <span style="background:#DCEAE8; color:#93A3A0; font-size:15px; font-weight:700; padding:14px 22px; border-radius:12px">Deshabilitado</span>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center">
+            <span style="width:56px; height:56px; border-radius:99px; background:#E07856; color:#FFF7F1; display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:600; box-shadow:0 8px 20px -6px rgba(224,120,86,.7)">＋</span>
+            <span style="font-size:12.5px; color:#6A7B77; line-height:1.5">FAB de creación rápida — flota sobre la nav inferior, 16px de margen.</span>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:12px">
+          <span style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:700; color:#6A7B77">Badges de estado</span>
+          <div style="display:flex; gap:8px; flex-wrap:wrap">
+            <span style="font-size:11.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; background:#E4EFE5; color:#3F6B4A; padding:6px 10px; border-radius:8px">Completado</span>
+            <span style="font-size:11.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; background:#F6EBD6; color:#7A5A20; padding:6px 10px; border-radius:8px">Pendiente</span>
+            <span style="font-size:11.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; background:#F3DDD8; color:#8C3325; padding:6px 10px; border-radius:8px">Vencido</span>
+            <span style="font-size:11.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; background:#F3E4D9; color:#A6512F; padding:6px 10px; border-radius:8px">En curso</span>
+            <span style="font-size:11.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; background:#DCEAE8; color:#1B5560; padding:6px 10px; border-radius:8px">Borrador</span>
+          </div>
+          <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap">
+            <span style="display:flex; align-items:center; gap:7px; font-size:13.5px; font-weight:600"><span style="width:11px;height:11px;border-radius:99px;background:#5F8F6B"></span>Progresando</span>
+            <span style="display:flex; align-items:center; gap:7px; font-size:13.5px; font-weight:600"><span style="width:11px;height:11px;border-radius:99px;background:#C08A3E"></span>Necesita atención</span>
+            <span style="display:flex; align-items:center; gap:7px; font-size:13.5px; font-weight:600"><span style="width:11px;height:11px;border-radius:99px;background:#A13F2E"></span>Sin contacto</span>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:12px">
+          <span style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:700; color:#6A7B77">Inputs · alto 52px</span>
+          <div style="display:flex; flex-direction:column; gap:10px">
+            <div style="display:flex; flex-direction:column; gap:6px">
+              <span style="font-size:12px; font-weight:700; color:#6A7B77">Nombre completo</span>
+              <span style="display:block; background:#FFFFFF; border:1.5px solid #E4DBC7; border-radius:12px; padding:15px 14px; font-size:16px; color:#93A3A0">Ej. Ana Solís Márquez</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:6px">
+              <span style="font-size:12px; font-weight:700; color:#2F8F92">Fecha del bautismo · enfocado</span>
+              <span style="display:block; background:#FFFFFF; border:1.5px solid #2F8F92; border-radius:12px; padding:15px 14px; font-size:16px; color:#1E2C2A; box-shadow:0 0 0 3px rgba(47,143,146,.16)">22 de agosto de 2026</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:6px">
+              <span style="font-size:12px; font-weight:700; color:#A13F2E">Unidad · con error</span>
+              <span style="display:block; background:#FFFFFF; border:1.5px solid #A13F2E; border-radius:12px; padding:15px 14px; font-size:16px; color:#1E2C2A">—</span>
+              <span style="font-size:12.5px; color:#A13F2E; font-weight:600">Requerido para generar el programa.</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:12px">
+          <span style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:700; color:#6A7B77">Tarjeta y navegación inferior</span>
+          <div style="background:#FFFFFF; border:1px solid #E4DBC7; border-radius:20px; padding:16px 18px; display:flex; gap:14px; align-items:center; position:relative; overflow:hidden">
+            <span style="position:absolute; left:0; top:0; bottom:0; width:5px; background:#2F8F92"></span>
+            <div style="flex:1; display:flex; flex-direction:column; gap:4px; padding-left:4px">
+              <span style="font-family:Fraunces,serif; font-size:18px; font-weight:600; color:#0E3B43">Título de la tarjeta</span>
+              <span style="font-size:13px; color:#6A7B77">Línea de apoyo · metadato secundario</span>
+            </div>
+            <span style="min-width:30px; height:30px; border-radius:99px; background:#A13F2E; color:#F7F1E4; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:0 8px">4</span>
+          </div>
+          <div style="background:#FFFFFF; border:1px solid #E4DBC7; border-radius:20px; padding:10px 8px 14px; display:grid; grid-template-columns:repeat(5,1fr); gap:2px">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; color:#0E3B43">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="9" width="16" height="12" rx="2"></rect><path d="M3 10l9-6 9 6"></path></svg>
+              <span style="font-size:11px; font-weight:700">Inicio</span>
+              <span style="width:18px; height:3px; border-radius:9px; background:#E07856"></span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; color:#93A3A0">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M8 9h8M8 13h8M8 17h4"></path></svg>
+              <span style="font-size:11px; font-weight:600">Secretario</span>
+              <span style="width:18px; height:3px; border-radius:9px; background:transparent"></span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; color:#93A3A0">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"></circle><circle cx="12" cy="12" r="8"></circle></svg>
+              <span style="font-size:11px; font-weight:600">Gather</span>
+              <span style="width:18px; height:3px; border-radius:9px; background:transparent"></span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; color:#93A3A0">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3c4 5 6 7.5 6 10a6 6 0 0 1-12 0c0-2.5 2-5 6-10z"></path></svg>
+              <span style="font-size:11px; font-weight:600">Bautizos</span>
+              <span style="width:18px; height:3px; border-radius:9px; background:transparent"></span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 0; color:#93A3A0">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h16M4 16h16"></path><circle cx="10" cy="8" r="2.4" fill="#FFFFFF"></circle><circle cx="15" cy="16" r="2.4" fill="#FFFFFF"></circle></svg>
+              <span style="font-size:11px; font-weight:600">Ajustes</span>
+              <span style="width:18px; height:3px; border-radius:9px; background:transparent"></span>
+            </div>
+          </div>
+          <span style="font-size:12.5px; color:#6A7B77; line-height:1.55">Nav: 5 destinos fijos, altura 56px + safe-area inferior de 26px. Activo = ink + subrayado coral (nunca solo color). Las 9 secciones de Secretario viven en chips horizontales dentro del módulo, no en la nav global.</span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showOffline&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Estados&quot;},&quot;showRings&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Marca&quot;},&quot;unitName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Barrio Las Palmas&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Datos&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      showOffline: this.props.showOffline ?? true,
+      showRings: this.props.showRings ?? true,
+      unitName: this.props.unitName ?? "Barrio Las Palmas"
+    };
+  }
+}
+</script>
+</body>
+</html>

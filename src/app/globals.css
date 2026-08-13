@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+:root {
+  --color-deep-water: #0e3b43;
+  --color-water-mid: #1b5560;
+  --color-living-teal: #2f8f92;
+  --color-dawn-coral: #e07856;
+  --color-dawn-coral-dim: #f0af97;
+  --color-linen: #f7f1e4;
+  --color-linen-dim: #efe4cb;
+  --color-mist: #dceae8;
+  --color-ink: #1e2c2a;
+  --color-line: #d9cdae;
+  --color-sage: #5f8f6b;
+  --color-sage-light: #e6efe4;
+  --color-amber: #c08a3e;
+  --color-amber-light: #f5ead3;
+  --color-rojo: #a13f2e;
+  --color-rojo-light: #f3dfd8;
+
+  /* Neutrals + badge tints (design handoff "1e — Sistema de componentes") */
+  --color-line-card: #e4dbc7;
+  --color-divider: #efe7d6;
+  --color-muted: #93a3a0;
+  --color-muted-2: #6a7b77;
+  --color-ink-soft: #42544f;
+  --color-badge-done-bg: #e4efe5;
+  --color-badge-done-text: #3f6b4a;
+  --color-badge-pending-bg: #f6ebd6;
+  --color-badge-pending-text: #7a5a20;
+  --color-badge-overdue-bg: #f3ddd8;
+  --color-badge-overdue-text: #8c3325;
+  --color-badge-progress-bg: #f3e4d9;
+  --color-badge-progress-text: #a6512f;
+  --color-badge-draft-bg: #dceae8;
+  --color-badge-draft-text: #1b5560;
+}
+
+@theme inline {
+  --color-deep-water: var(--color-deep-water);
+  --color-water-mid: var(--color-water-mid);
+  --color-living-teal: var(--color-living-teal);
+  --color-dawn-coral: var(--color-dawn-coral);
+  --color-dawn-coral-dim: var(--color-dawn-coral-dim);
+  --color-linen: var(--color-linen);
+  --color-linen-dim: var(--color-linen-dim);
+  --color-mist: var(--color-mist);
+  --color-ink: var(--color-ink);
+  --color-line: var(--color-line);
+  --color-sage: var(--color-sage);
+  --color-sage-light: var(--color-sage-light);
+  --color-amber: var(--color-amber);
+  --color-amber-light: var(--color-amber-light);
+  --color-rojo: var(--color-rojo);
+  --color-rojo-light: var(--color-rojo-light);
+
+  --color-line-card: var(--color-line-card);
+  --color-divider: var(--color-divider);
+  --color-muted: var(--color-muted);
+  --color-muted-2: var(--color-muted-2);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-badge-done-bg: var(--color-badge-done-bg);
+  --color-badge-done-text: var(--color-badge-done-text);
+  --color-badge-pending-bg: var(--color-badge-pending-bg);
+  --color-badge-pending-text: var(--color-badge-pending-text);
+  --color-badge-overdue-bg: var(--color-badge-overdue-bg);
+  --color-badge-overdue-text: var(--color-badge-overdue-text);
+  --color-badge-progress-bg: var(--color-badge-progress-bg);
+  --color-badge-progress-text: var(--color-badge-progress-text);
+  --color-badge-draft-bg: var(--color-badge-draft-bg);
+  --color-badge-draft-text: var(--color-badge-draft-text);
+
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-karla);
+}
+
+body {
+  background:
+    radial-gradient(circle at 90% -10%, rgba(47, 143, 146, 0.12), transparent 45%),
+    var(--color-linen);
+  color: var(--color-ink);
+  font-family: var(--font-karla), Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+.display {
+  font-family: var(--font-fraunces), Georgia, serif;
+}
