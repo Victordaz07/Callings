@@ -1,10 +1,11 @@
-import { auth, signOut } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
 import { PageHeader } from "@/components/PageHeader";
 import { Card, SectionLabel } from "@/components/ui/Card";
 import { TextField } from "@/components/ui/TextField";
 import { Button } from "@/components/ui/Button";
 import { RolesToggleList } from "./RolesToggleList";
+import { LogoutButton } from "./LogoutButton";
 import { saveUnitSettingsAction } from "./actions";
 
 export default async function AjustesPage() {
@@ -88,19 +89,7 @@ export default async function AjustesPage() {
           </p>
         </div>
 
-        <form
-          action={async () => {
-            "use server";
-            await signOut({ redirectTo: "/login" });
-          }}
-        >
-          <button
-            type="submit"
-            className="w-full py-3 text-center text-sm font-bold text-rojo"
-          >
-            Cerrar sesión
-          </button>
-        </form>
+        <LogoutButton />
       </main>
     </div>
   );
