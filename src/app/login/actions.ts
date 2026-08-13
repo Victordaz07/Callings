@@ -10,12 +10,12 @@ export async function authenticate(
   try {
     await signIn("credentials", {
       email: formData.get("email"),
-      passcode: formData.get("passcode"),
+      password: formData.get("password"),
       redirectTo: "/",
     });
   } catch (error) {
     if (error instanceof AuthError) {
-      return "Correo o código de acceso incorrectos.";
+      return "Correo o contraseña incorrectos.";
     }
     throw error;
   }

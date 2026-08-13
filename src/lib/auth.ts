@@ -1,11 +1,12 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
+import { prisma } from "@/lib/prisma";
 
 /**
- * Single-user auth: the app belongs to whoever holds the passcode configured
- * in APP_PASSCODE_HASH. Email is only used to namespace stored data, so it
- * can grow into multi-user later without changing the storage shape.
+ * Auth real multiusuario sobre Prisma. NextAuth solo autentica y expone la
+ * sesión — nunca deriva ni maneja la clave de cifrado E2EE, eso ocurre en
+ * el cliente después del login (lib/crypto.ts, Bloque 3).
  */
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
@@ -15,39 +16,38 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     Credentials({
       credentials: {
         email: { label: "Correo", type: "email" },
-        passcode: { label: "Código de acceso", type: "password" },
+        password: { label: "Contraseña", type: "password" },
       },
       authorize: async (credentials) => {
         const email = String(credentials?.email ?? "")
           .trim()
           .toLowerCase();
-        const passcode = String(credentials?.passcode ?? "");
-        const ownerEmail = (process.env.APP_OWNER_EMAIL ?? "")
-          .trim()
-          .toLowerCase();
-        const passcodeHash = process.env.APP_PASSCODE_HASH ?? "";
+        const password = String(credentials?.password ?? "");
+        if (!email || !password) return null;
 
-        if (!ownerEmail || !passcodeHash) {
-          throw new Error(
-            "Auth no configurada: define APP_OWNER_EMAIL y APP_PASSCODE_HASH."
-          );
-        }
-        if (!email || !passcode || email !== ownerEmail) return null;
+        const user = await prisma.user.findUnique({ where: { email } });
+        if (!user) return null;
 
-        const valid = await bcrypt.compare(passcode, passcodeHash);
+        const valid = await bcrypt.compare(password, user.passwordHash);
         if (!valid) return null;
 
-        return { id: email, email };
+        return { id: user.id, email: user.email, kdfSalt: user.kdfSalt };
       },
     }),
   ],
   callbacks: {
     jwt({ token, user }) {
-      if (user?.email) token.email = user.email;
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+        token.kdfSalt = user.kdfSalt;
+      }
       return token;
     },
     session({ session, token }) {
-      if (token.email) session.user.email = token.email;
+      session.user.id = token.id;
+      session.user.email = token.email!;
+      session.user.kdfSalt = token.kdfSalt;
       return session;
     },
   },

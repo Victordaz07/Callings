@@ -1,17 +1,20 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 
+const PUBLIC_ROUTES = ["/login", "/signup"];
+
 export default auth((req) => {
   const isLoggedIn = !!req.auth;
   const { pathname } = req.nextUrl;
+  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
 
-  if (!isLoggedIn && pathname !== "/login") {
+  if (!isLoggedIn && !isPublicRoute) {
     const loginUrl = new URL("/login", req.nextUrl.origin);
     loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
   }
 
-  if (isLoggedIn && pathname === "/login") {
+  if (isLoggedIn && isPublicRoute) {
     return NextResponse.redirect(new URL("/", req.nextUrl.origin));
   }
 

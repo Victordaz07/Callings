@@ -4,13 +4,10 @@ import { useActionState } from "react";
 import Link from "next/link";
 import { TextField } from "@/components/ui/TextField";
 import { Button } from "@/components/ui/Button";
-import { authenticate } from "./actions";
+import { signup } from "./actions";
 
-export function LoginForm() {
-  const [error, formAction, isPending] = useActionState(
-    authenticate,
-    undefined
-  );
+export function SignupForm() {
+  const [error, formAction, isPending] = useActionState(signup, undefined);
 
   return (
     <form action={formAction} className="flex flex-col gap-4">
@@ -26,17 +23,26 @@ export function LoginForm() {
         label="Contraseña"
         name="password"
         type="password"
-        autoComplete="current-password"
+        autoComplete="new-password"
         required
+        minLength={8}
+      />
+      <TextField
+        label="Confirma tu contraseña"
+        name="confirmPassword"
+        type="password"
+        autoComplete="new-password"
+        required
+        minLength={8}
         error={error}
       />
       <Button type="submit" variant="accent" disabled={isPending}>
-        {isPending ? "Entrando…" : "Entrar"}
+        {isPending ? "Creando cuenta…" : "Crear cuenta"}
       </Button>
       <p className="text-center text-sm text-muted-2">
-        ¿No tienes cuenta?{" "}
-        <Link href="/signup" className="font-bold text-water-mid">
-          Créala aquí
+        ¿Ya tienes cuenta?{" "}
+        <Link href="/login" className="font-bold text-water-mid">
+          Entra aquí
         </Link>
       </p>
     </form>
