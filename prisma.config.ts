@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { defineConfig, env } from "prisma/config";
+import { defineConfig } from "prisma/config";
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
@@ -7,8 +7,12 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    // El CLI (migrate/studio) usa la conexión directa — sin pooler —
-    // porque las migraciones necesitan un lock de sesión estable.
-    url: env("DIRECT_URL"),
+    // `env()` de prisma/config lanza si la variable falta, incluso para
+    // `prisma generate` (que no necesita conexión real) — eso rompía el
+    // build en Vercel antes de configurar Neon. Leemos process.env
+    // directamente para que generate funcione sin DB; migrate/studio sí
+    // fallarán con un error claro si DIRECT_URL falta cuando de verdad
+    // necesitan conectarse.
+    url: process.env.DIRECT_URL ?? process.env.DATABASE_URL ?? "",
   },
 });
