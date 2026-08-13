@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  kdfSalt      String // salt único para derivar la clave de cifrado (PBKDF2), en base64. NO es secreto, puede vivir en la BD.
+  consentedAt  DateTime? // fecha de aceptación de la pantalla de consentimiento
+  records      Record[]
+  createdAt    DateTime  @default(now())
+}
+
+model Record {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moduleId   String // ej: "eq_ministracion", "wml_investigadores", "eventos_planificador"
+  recordKey  String // identificador único del registro dentro del módulo (uuid generado en cliente)
+  ciphertext String // contenido cifrado, base64
+  iv         String // vector de inicialización AES-GCM, base64, único por registro
+  deleted    Boolean  @default(false) // soft delete, para poder sincronizar borrados entre dispositivos
+  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, moduleId, recordKey])
+  @@index([userId, moduleId])
+}
