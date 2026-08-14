@@ -6,6 +6,7 @@ import {
   getLocalRecords,
   saveLocalRecord,
   softDeleteLocalRecord,
+  updateLocalRecord,
   type LocalRecord,
 } from "@/lib/localRecords";
 import { pushPendingRecords, syncPull, syncPush } from "@/lib/sync";
@@ -82,6 +83,30 @@ export function useSyncModule<T>(moduleId: string) {
     [key, moduleId, reloadFromLocal]
   );
 
+  /**
+   * Aplica un patch parcial a un registro existente. A diferencia de
+   * `save` (que espera el objeto completo), esto es seguro para llamadas
+   * rápidas y solapadas a distintos campos del mismo registro: el merge
+   * ocurre dentro de una transacción IDB atómica sobre el valor más
+   * reciente en disco, no sobre un `record.data` capturado en un cierre de
+   * React que podría estar desactualizado.
+   */
+  const update = useCallback(
+    async (recordKey: string, patch: Partial<T>) => {
+      const record = await updateLocalRecord<T>(moduleId, recordKey, patch);
+      await reloadFromLocal();
+      if (key && navigator.onLine) {
+        void syncPush(key, record)
+          .then(() => reloadFromLocal())
+          .catch(() => {
+            // queda pendingSync:true en IndexedDB; se reintenta al reconectar.
+          });
+      }
+      return record;
+    },
+    [key, moduleId, reloadFromLocal]
+  );
+
   const remove = useCallback(
     async (recordKey: string) => {
       await softDeleteLocalRecord(moduleId, recordKey);
@@ -102,6 +127,7 @@ export function useSyncModule<T>(moduleId: string) {
     loaded,
     syncing,
     save,
+    update,
     remove,
     refresh: pull,
   };

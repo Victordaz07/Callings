@@ -64,12 +64,11 @@ export default function WmlInvestigadoresPage() {
   const cycleEtapa = (record: LocalRecord<InvestigadorData>) => {
     const idx = ETAPA_ORDER.indexOf(record.data.etapa);
     const next = ETAPA_ORDER[(idx + 1) % ETAPA_ORDER.length];
-    void mod.save(record.recordKey, { ...record.data, etapa: next });
+    void mod.update(record.recordKey, { etapa: next });
   };
 
   const markContacted = (record: LocalRecord<InvestigadorData>) => {
-    void mod.save(record.recordKey, {
-      ...record.data,
+    void mod.update(record.recordKey, {
       ultimoContacto: new Date().toISOString(),
     });
   };
@@ -79,7 +78,7 @@ export default function WmlInvestigadoresPage() {
     field: keyof InvestigadorData,
     value: string
   ) => {
-    void mod.save(record.recordKey, { ...record.data, [field]: value });
+    void mod.update(record.recordKey, { [field]: value } as Partial<InvestigadorData>);
   };
 
   return (

@@ -120,6 +120,37 @@ export async function saveLocalRecord<T>(
   return record;
 }
 
+/**
+ * Aplica un patch parcial sobre el registro actual dentro de una sola
+ * transacción IDB (lectura + escritura atómica). Evita que ediciones
+ * rápidas a distintos campos del mismo registro se pisen entre sí por usar
+ * una copia de `data` capturada en un cierre de React que todavía no se
+ * había refrescado con el guardado anterior.
+ */
+export async function updateLocalRecord<T>(
+  moduleId: string,
+  recordKey: string,
+  patch: Partial<T>
+): Promise<LocalRecord<T>> {
+  const db = await getDb();
+  const tx = db.transaction("records", "readwrite");
+  const store = tx.objectStore("records");
+  const existing = await store.get([moduleId, recordKey]);
+  const currentData = (existing?.data ?? {}) as T;
+  const record: LocalRecord<T> = {
+    moduleId,
+    recordKey,
+    data: { ...currentData, ...patch },
+    deleted: false,
+    updatedAt: new Date().toISOString(),
+    syncedAt: null,
+    pendingSync: true,
+  };
+  await store.put(toStored(record));
+  await tx.done;
+  return record;
+}
+
 /** Soft-delete local — se sincroniza como borrado, nunca se pierde el historial de sync. */
 export async function softDeleteLocalRecord(
   moduleId: string,

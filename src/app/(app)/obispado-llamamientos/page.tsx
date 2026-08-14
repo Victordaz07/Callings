@@ -81,7 +81,7 @@ export default function ObispadoLlamamientosPage() {
   };
 
   const update = (record: LocalRecord<LlamamientoData>, patch: Partial<LlamamientoData>) => {
-    void mod.save(record.recordKey, { ...record.data, ...patch });
+    void mod.update(record.recordKey, patch);
   };
 
   const cycleEtapa = (record: LocalRecord<LlamamientoData>) => {

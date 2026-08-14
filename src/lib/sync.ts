@@ -90,8 +90,27 @@ export async function syncPull(moduleId: string, key: CryptoKey): Promise<number
   return applied;
 }
 
+// El servidor hace upsert ciego (nunca compara `updatedAt` del cliente,
+// porque no lo guarda — usa su propio timestamp de escritura). Si dos
+// pushes del mismo registro quedan en vuelo a la vez, pueden llegar
+// desordenados y el más viejo pisar al más nuevo. Se serializan por
+// [moduleId, recordKey] para que el servidor siempre reciba los pushes de
+// un mismo registro en el mismo orden en que se generaron localmente.
+const pushQueues = new Map<string, Promise<void>>();
+
 /** Envía un registro local al servidor. No bloquea: quien la llama decide si espera o no. */
-export async function syncPush(key: CryptoKey, record: LocalRecord): Promise<void> {
+export function syncPush(key: CryptoKey, record: LocalRecord): Promise<void> {
+  const qKey = `${record.moduleId}:${record.recordKey}`;
+  const prev = pushQueues.get(qKey) ?? Promise.resolve();
+  const run = prev.catch(() => {}).then(() => pushRecord(key, record));
+  pushQueues.set(qKey, run);
+  run.catch(() => {}).finally(() => {
+    if (pushQueues.get(qKey) === run) pushQueues.delete(qKey);
+  });
+  return run;
+}
+
+async function pushRecord(key: CryptoKey, record: LocalRecord): Promise<void> {
   if (record.deleted) {
     const res = await fetch("/api/records", {
       method: "DELETE",

@@ -80,7 +80,7 @@ export default function EventosPlanificadorPage() {
   };
 
   const update = (record: LocalRecord<EventoData>, patch: Partial<EventoData>) => {
-    void mod.save(record.recordKey, { ...record.data, ...patch });
+    void mod.update(record.recordKey, patch);
   };
 
   const cycleEstado = (record: LocalRecord<EventoData>) => {

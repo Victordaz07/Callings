@@ -78,7 +78,7 @@ export default function SocorroServicioPage() {
   };
 
   const update = (record: LocalRecord<NecesidadData>, patch: Partial<NecesidadData>) => {
-    void mod.save(record.recordKey, { ...record.data, ...patch });
+    void mod.update(record.recordKey, patch);
   };
 
   const cycleEstado = (record: LocalRecord<NecesidadData>) => {
