@@ -4,10 +4,15 @@ export function TextField({
   label,
   error,
   className = "",
+  wrapperClassName = "",
   ...props
-}: InputHTMLAttributes<HTMLInputElement> & { label: string; error?: string }) {
+}: InputHTMLAttributes<HTMLInputElement> & {
+  label: string;
+  error?: string;
+  wrapperClassName?: string;
+}) {
   return (
-    <label className="flex flex-col gap-1.5">
+    <label className={`flex flex-col gap-1.5 ${wrapperClassName}`}>
       <span
         className={`text-xs font-bold ${error ? "text-rojo" : "text-muted-2"}`}
       >
