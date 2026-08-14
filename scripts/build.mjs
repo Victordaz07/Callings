@@ -3,6 +3,12 @@
 // base de datos configurada — así el build nunca se rompe en un deploy
 // donde DATABASE_URL/DIRECT_URL todavía no se hayan agregado (p. ej. antes
 // de conectar Neon por primera vez).
+//
+// Vercel inyecta las variables de entorno configuradas directo en
+// process.env durante el build, así que esto es solo para desarrollo
+// local (un `npm run build` normal no carga .env por su cuenta, a
+// diferencia de `next build`).
+import "dotenv/config";
 import { spawnSync } from "node:child_process";
 
 const hasDb = Boolean(process.env.DIRECT_URL || process.env.DATABASE_URL);
