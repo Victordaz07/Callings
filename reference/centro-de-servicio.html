@@ -1,0 +1,2148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Centro de Servicio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --deep-water:#0E3B43;
+    --water-mid:#1B5560;
+    --living-teal:#2F8F92;
+    --dawn-coral:#E07856;
+    --dawn-coral-dim:#F0AF97;
+    --linen:#F7F1E4;
+    --linen-dim:#EFE4CB;
+    --mist:#DCEAE8;
+    --ink:#1E2C2A;
+    --line:#D9CDAE;
+    --sage:#5F8F6B;
+    --sage-light:#E6EFE4;
+    --amber:#C08A3E;
+    --amber-light:#F5EAD3;
+    --rojo:#A13F2E;
+    --rojo-light:#F3DFD8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Karla', Arial, sans-serif;
+    background:
+      radial-gradient(circle at 90% -10%, rgba(47,143,146,0.12), transparent 45%),
+      var(--linen);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,.display{font-family:'Fraunces', Georgia, serif;}
+
+  .app-header{
+    position:relative; overflow:hidden; color:var(--linen);
+    padding:16px 16px 18px; box-shadow:0 4px 14px rgba(14,59,67,0.28);
+  }
+  .app-header::before{
+    content:''; position:absolute; inset:0; z-index:0;
+    background:
+      radial-gradient(circle at 15% 0%, rgba(224,120,86,0.35), transparent 55%),
+      linear-gradient(150deg, var(--deep-water) 0%, var(--water-mid) 70%, var(--living-teal) 130%);
+  }
+  .header-top{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .app-header h1{margin:0;font-size:1.5rem;font-weight:600;letter-spacing:-0.01em;}
+  .app-header .sub{font-family:'Karla',sans-serif;font-size:.74rem;color:var(--mist);opacity:.85;margin-top:2px;}
+  .header-actions{display:flex;gap:6px;flex-shrink:0;}
+  .ctrl-teal{
+    background:rgba(255,255,255,0.14); color:var(--linen); border:1px solid rgba(255,255,255,0.25);
+    border-radius:8px; font-family:'Karla',sans-serif; font-size:.72rem; font-weight:700;
+    padding:7px 11px; cursor:pointer;
+  }
+  .ctrl-teal:hover{background:rgba(255,255,255,0.22);}
+
+  main{padding:14px;max-width:760px;margin:0 auto;padding-bottom:60px;}
+
+  .stats-row{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px;}
+  .stat-pill{
+    font-family:'Karla',sans-serif;font-size:.68rem;background:white;border:1px solid var(--line);
+    border-radius:20px;padding:6px 12px;white-space:nowrap;color:var(--water-mid);flex-shrink:0;
+  }
+  .stat-pill b{color:var(--deep-water);}
+  .stat-pill.alert{border-color:var(--rojo);color:var(--rojo);font-weight:700;}
+  .stat-pill.alert b{color:var(--rojo);}
+
+  .privacy-note{
+    background:var(--rojo-light);border:1px solid #e0bdae;border-radius:10px;
+    padding:10px 12px;margin-bottom:14px;font-size:.72rem;color:#7a3524;line-height:1.45;
+  }
+  .privacy-note b{color:var(--rojo);}
+  .info-note{
+    background:var(--mist);border:1px solid #b9d4d0;border-radius:10px;
+    padding:9px 11px;margin-bottom:12px;font-size:.72rem;color:var(--water-mid);line-height:1.45;
+  }
+  .info-note b{color:var(--deep-water);}
+  .title-input{
+    font-family:'Fraunces',serif;font-size:1.02rem;font-weight:600;color:var(--deep-water);
+    border:none;background:transparent;padding:4px 2px;width:100%;border-radius:6px;
+  }
+  .title-input:focus{outline:none;background:var(--linen);}
+  .title-input:disabled{color:#8f9c8a;text-decoration:line-through;}
+
+  .view-toggle{display:flex;gap:5px;margin-bottom:16px;overflow-x:auto;padding-bottom:2px;}
+  .view-toggle-btn{
+    flex:0 0 auto; padding:9px 12px; border-radius:8px; border:1px solid var(--line); background:white;
+    font-family:'Karla',sans-serif; font-size:.76rem; font-weight:700; cursor:pointer; color:var(--water-mid);
+    white-space:nowrap;
+  }
+  .view-toggle-btn.active{ background:var(--living-teal); color:white; border-color:var(--living-teal); }
+
+  .card{
+    background:white;border:1px solid var(--line);border-radius:12px;margin-bottom:12px;
+    padding:14px 15px; box-shadow:0 1px 3px rgba(14,59,67,0.08);
+  }
+  .card h2{font-size:1.02rem;margin:0 0 3px;color:var(--deep-water);}
+  .card .card-sub{font-size:.76rem;color:#7a6f52;margin-bottom:10px;}
+
+  .check-item{
+    display:grid;grid-template-columns:22px 1fr auto;align-items:center;gap:8px;
+    padding:9px 2px;border-bottom:1px dashed var(--line);font-size:.88rem;
+  }
+  .check-item:last-child{border-bottom:none;}
+  .check-item input[type=checkbox]{width:19px;height:19px;accent-color:var(--sage);flex-shrink:0;}
+  .check-item.checked span{color:#8f9c8a;text-decoration:line-through;}
+  .check-item span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .check-item .row-right{display:flex;align-items:center;gap:6px;justify-self:end;}
+  .check-item .resp-input{
+    min-width:70px;max-width:220px;transition:width .15s ease;
+    padding:5px 8px;border-radius:6px;border:1px solid var(--line);
+    font-family:'Karla',sans-serif;font-size:.72rem;background:var(--linen);color:var(--water-mid);
+  }
+  .check-item .resp-input:focus{background:white;border-color:var(--living-teal);outline:none;}
+  .check-item .resp-input::placeholder{color:#b0a888;}
+  .check-item .row-del{color:var(--rojo);cursor:pointer;font-weight:700;opacity:.6;font-size:.85rem;}
+  .check-item .row-del:hover{opacity:1;}
+
+  .add-row{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+  .add-row input, .add-row textarea{
+    flex:1;min-width:120px;padding:9px 10px;border-radius:7px;border:1px solid var(--line);
+    font-family:'Karla',sans-serif;font-size:.85rem;background:var(--linen);color:var(--ink);
+  }
+  .add-row button{
+    background:var(--living-teal);color:white;border:none;border-radius:7px;padding:0 16px;
+    font-size:1.1rem;cursor:pointer;
+  }
+  .btn-full{
+    width:100%;background:var(--dawn-coral);color:white;border:none;border-radius:8px;padding:11px;
+    font-family:'Karla',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;margin-top:12px;
+  }
+
+  textarea.minuta{
+    width:100%;min-height:130px;padding:12px;border-radius:8px;border:1px solid var(--line);
+    font-family:'Karla',sans-serif;font-size:.88rem;line-height:1.6;background:var(--linen);color:var(--ink);
+    resize:vertical;
+  }
+  .stamp{
+    display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;
+    font-family:'Karla',sans-serif; font-size:.62rem; font-weight:700;
+    border:1.5px solid var(--dawn-coral); color:var(--dawn-coral);
+    border-radius:50%; width:52px; height:52px; text-align:center; line-height:1.1;
+  }
+  .minuta-entry{display:flex;gap:12px;padding:12px 0;border-top:1px dashed var(--line);}
+  .minuta-entry .txt{flex:1;font-size:.85rem;white-space:pre-wrap;line-height:1.55;color:var(--ink);}
+
+  .minuta-row{display:flex;gap:10px;align-items:flex-start;padding:10px 2px;border-bottom:1px dashed var(--line);}
+  .minuta-row:last-child{border-bottom:none;}
+  .minuta-row .stamp-mini{
+    flex:0 0 60px;font-family:'Karla',sans-serif;font-size:.62rem;font-weight:700;
+    color:var(--dawn-coral);line-height:1.25;padding-top:6px;
+  }
+  .minuta-row .body{flex:1;min-width:0;}
+  .minuta-row .preview{font-size:.84rem;color:var(--ink);white-space:pre-wrap;line-height:1.45;}
+  .minuta-row .meta-line{font-size:.68rem;color:#a89e7f;margin-top:5px;}
+  .minuta-row .meta-line .link{color:var(--water-mid);cursor:pointer;font-weight:700;}
+  .minuta-row .icon-btn{flex-shrink:0;margin-top:2px;}
+
+  .list-row{
+    background:var(--linen);border-left:3px solid var(--dawn-coral);border-radius:6px;
+    padding:9px 11px;margin-bottom:8px;font-size:.85rem;
+  }
+  .list-row .row-top{display:flex;justify-content:space-between;align-items:center;gap:8px;}
+  .list-row .who{font-weight:700;color:var(--deep-water);}
+  .list-row .what{margin-top:2px;color:var(--water-mid);}
+  .badge{
+    font-family:'Karla',sans-serif;font-size:.63rem;font-weight:700;text-transform:uppercase;
+    letter-spacing:.03em;padding:4px 9px;border-radius:20px;white-space:nowrap;cursor:pointer;flex-shrink:0;
+  }
+  .badge.pending{background:var(--amber-light);color:var(--amber);}
+  .badge.done{background:var(--sage-light);color:var(--sage);}
+
+  .semaforo-row{
+    display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px dashed var(--line);
+  }
+  .semaforo-row:last-child{border-bottom:none;}
+  .semaforo-dot{width:10px;height:10px;border-radius:50%;background:#e2d8ba;flex-shrink:0;}
+  .semaforo-dot.verde{background:var(--sage);}
+  .semaforo-dot.rojo{background:var(--rojo);}
+  .semaforo-info{flex:1;min-width:0;}
+  .semaforo-info .names{font-weight:700;font-size:.86rem;color:var(--deep-water);}
+  .semaforo-info .family{font-size:.78rem;color:#7a6f52;}
+  .semaforo-info .contact{font-size:.68rem;color:#a89e7f;margin-top:2px;}
+  .semaforo-info .contact.alert{color:var(--rojo);font-weight:700;}
+  .mark-btn{
+    font-family:'Karla',sans-serif;font-size:.66rem;font-weight:700;background:white;border:1px solid var(--line);
+    border-radius:6px;padding:6px 9px;cursor:pointer;flex-shrink:0;
+  }
+
+  .field-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+  .field{flex:1;min-width:120px;}
+  .field label{display:block;font-size:.68rem;font-weight:700;color:#7a6f52;margin-bottom:3px;text-transform:uppercase;letter-spacing:.03em;}
+  .field input{
+    width:100%;padding:9px 10px;border-radius:7px;border:1px solid var(--line);
+    font-family:'Karla',sans-serif;font-size:.85rem;background:var(--linen);color:var(--ink);
+  }
+
+  .share-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+  .share-btn{
+    flex:1;min-width:96px;border:none;border-radius:8px;padding:9px 10px;
+    font-family:'Karla',sans-serif;font-weight:700;font-size:.76rem;cursor:pointer;color:white;text-align:center;
+  }
+  .share-btn.wa{background:var(--sage);}
+  .share-btn.mail{background:var(--water-mid);}
+  .share-btn.copy{background:var(--amber);}
+  .share-btn:hover{opacity:.9;}
+
+  .card-header-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .menu-wrap{position:relative;flex-shrink:0;}
+  .icon-btn{
+    width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:white;
+    color:var(--water-mid);font-size:1.05rem;line-height:1;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .icon-btn:hover{background:var(--linen);}
+  .dropdown-menu{
+    display:none;position:absolute;top:40px;right:0;background:white;border:1px solid var(--line);
+    border-radius:10px;box-shadow:0 8px 22px rgba(14,59,67,0.18);min-width:210px;z-index:30;overflow:hidden;
+  }
+  .dropdown-menu.open{display:block;}
+  .dropdown-menu button{
+    width:100%;text-align:left;background:none;border:none;padding:10px 14px;
+    font-family:'Karla',sans-serif;font-size:.82rem;color:var(--ink);cursor:pointer;
+    display:flex;align-items:center;gap:8px;
+  }
+  .dropdown-menu button:hover{background:var(--linen);}
+  .dropdown-menu .divider{height:1px;background:var(--line);margin:2px 0;}
+  .dropdown-menu button.danger{color:var(--dawn-coral);font-weight:700;}
+
+  .report-box{
+    background:var(--linen-dim); border:1px dashed var(--line); border-radius:10px; padding:14px;
+    font-family:'Karla',sans-serif; font-size:.82rem; white-space:pre-wrap; line-height:1.6; color:var(--ink);
+  }
+  .copy-btn{
+    margin-top:10px; background:var(--amber); color:white; border:none; border-radius:8px;
+    padding:10px 16px; cursor:pointer; font-size:.82rem; font-weight:700;
+  }
+
+  .empty{color:#a89e7f;font-size:.83rem;font-style:italic;padding:10px 0;}
+  .footer-note{text-align:center;font-size:.65rem;color:#a89e7f;padding:16px 20px 8px;line-height:1.5;}
+
+  .toast{
+    position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--deep-water);
+    color:var(--linen);padding:10px 18px;border-radius:20px;font-family:'Karla',sans-serif;
+    font-size:.8rem;z-index:90;opacity:0;transition:opacity .25s;pointer-events:none;
+  }
+  .toast.show{opacity:1;}
+
+  .modal-overlay{
+    display:none;position:fixed;inset:0;background:rgba(14,59,67,0.55);z-index:100;
+    align-items:flex-end;justify-content:center;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal-box{
+    background:var(--linen);width:100%;max-width:540px;max-height:85vh;overflow-y:auto;
+    border-radius:16px 16px 0 0;padding:20px 18px 26px;
+  }
+  .modal-box h2{margin:0 0 3px;color:var(--deep-water);}
+  .modal-box .card-sub{margin-bottom:14px;}
+  .role-option{
+    display:flex;align-items:flex-start;gap:10px;padding:12px 12px;border:1px solid var(--line);
+    border-radius:10px;margin-top:8px;background:white;cursor:pointer;
+  }
+  .role-option input[type=checkbox]{width:19px;height:19px;accent-color:var(--living-teal);margin-top:2px;flex-shrink:0;}
+  .role-option .role-label{font-weight:700;color:var(--deep-water);font-size:.88rem;}
+  .role-option .role-desc{font-size:.72rem;color:#7a6f52;margin-top:1px;}
+
+  .dash-hero{
+    position:relative;overflow:hidden;color:var(--linen);border-radius:14px;padding:18px 18px;margin-bottom:14px;
+  }
+  .dash-hero::before{
+    content:'';position:absolute;inset:0;z-index:0;
+    background:
+      radial-gradient(circle at 90% 0%, rgba(224,120,86,0.30), transparent 55%),
+      linear-gradient(135deg, var(--deep-water) 0%, var(--water-mid) 100%);
+  }
+  .dash-hero > *{position:relative;z-index:1;}
+  .dash-hero .date{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;opacity:.8;}
+  .dash-hero h2{margin:4px 0 2px;color:white;font-size:1.3rem;}
+  .dash-hero .sub{font-size:.84rem;opacity:.9;}
+
+  .stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+  .stat-card{
+    background:white;border:1px solid var(--line);border-radius:12px;padding:14px;cursor:pointer;
+    transition:transform .1s;box-shadow:0 1px 3px rgba(14,59,67,0.06);
+  }
+  .stat-card:active{transform:scale(0.97);}
+  .stat-card .num{font-family:'Fraunces',serif;font-size:1.9rem;font-weight:700;color:var(--deep-water);line-height:1;}
+  .stat-card.warn .num{color:var(--rojo);}
+  .stat-card.ok .num{color:var(--sage);}
+  .stat-card .label{font-size:.7rem;color:#7a6f52;margin-top:4px;font-weight:600;}
+
+  .feed-section-title{
+    font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+    color:var(--dawn-coral);margin:14px 0 4px;
+  }
+  .feed-section-title:first-child{margin-top:0;}
+  .feed-item{display:flex;gap:10px;align-items:flex-start;padding:8px 2px;border-bottom:1px dashed var(--line);cursor:pointer;}
+  .feed-item:last-child{border-bottom:none;}
+  .feed-item .feed-icon{font-size:1.05rem;flex-shrink:0;width:22px;text-align:center;}
+  .feed-item .feed-text{flex:1;font-size:.85rem;color:var(--ink);min-width:0;}
+  .feed-item .feed-text b{color:var(--deep-water);}
+  .feed-item .feed-sub{font-size:.68rem;color:#a89e7f;margin-top:1px;}
+
+  .chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+  .chip{background:var(--linen);border:1px solid var(--line);border-radius:20px;padding:6px 12px;font-size:.76rem;color:var(--water-mid);}
+  .chip b{color:var(--deep-water);}
+
+  .all-clear{text-align:center;padding:26px 10px;}
+  .all-clear .big-icon{font-size:2rem;margin-bottom:6px;}
+  .all-clear .msg{font-weight:700;color:var(--deep-water);font-size:.92rem;}
+  .all-clear .sub{font-size:.76rem;color:#7a6f52;margin-top:4px;}
+
+  .progress-track{height:8px;background:var(--linen-dim);border-radius:6px;overflow:hidden;margin-top:8px;}
+  .progress-fill{height:100%;background:var(--living-teal);transition:width .3s ease;}
+  .badge.agendada{background:var(--mist);color:var(--water-mid);}
+  .badge.hecha{background:var(--sage-light);color:var(--sage);}
+  .badge.pendiente{background:var(--amber-light);color:var(--amber);}
+  .badge.orando{background:var(--amber-light);color:var(--amber);}
+  .badge.propuesto{background:var(--mist);color:var(--water-mid);}
+  .badge.extendido{background:var(--sage-light);color:var(--sage);}
+
+
+/* ---- Shell (cascarón unificado) ---- */
+.shell-nav{
+  position:sticky;top:0;z-index:50;background:var(--deep-water);
+  display:flex;align-items:center;gap:4px;padding:10px 12px;overflow-x:auto;
+  box-shadow:0 2px 10px rgba(14,59,67,0.25);
+}
+.shell-brand{
+  font-family:'Fraunces',serif;color:var(--linen);font-weight:600;font-size:.95rem;
+  margin-right:10px;flex-shrink:0;white-space:nowrap;
+}
+.shell-tab{
+  flex-shrink:0;background:rgba(255,255,255,0.08);color:var(--mist);border:1px solid rgba(255,255,255,0.15);
+  border-radius:8px;padding:8px 13px;font-family:'Karla',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;
+  white-space:nowrap;
+}
+.shell-tab.active{background:var(--dawn-coral);color:white;border-color:var(--dawn-coral);}
+.shell-tab:hover:not(.active){background:rgba(255,255,255,0.16);}
+
+.hub-wrap{max-width:760px;margin:0 auto;padding:20px 16px 50px;}
+.hub-card{
+  background:white;border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px;
+  box-shadow:0 1px 3px rgba(14,59,67,0.08);cursor:pointer;transition:transform .1s;
+  display:flex;align-items:center;gap:14px;
+}
+.hub-card:active{transform:scale(0.98);}
+.hub-card.disabled{opacity:.6;cursor:default;}
+.hub-card .hub-icon{font-size:1.8rem;flex-shrink:0;}
+.hub-card .hub-title{font-family:'Fraunces',serif;font-weight:600;color:var(--deep-water);font-size:1.05rem;}
+.hub-card .hub-desc{font-size:.8rem;color:#7a6f52;margin-top:2px;}
+.hub-card .hub-tag{
+  font-family:'Karla',sans-serif;font-size:.62rem;font-weight:700;text-transform:uppercase;
+  background:var(--amber-light);color:var(--amber);padding:2px 8px;border-radius:10px;margin-top:6px;display:inline-block;
+}
+.upload-box{
+  border:2px dashed var(--line);border-radius:12px;padding:20px;text-align:center;margin-top:12px;
+  font-size:.82rem;color:#7a6f52;background:var(--linen-dim);
+}
+</style>
+</head>
+<body>
+<div class="shell-nav">
+  <div class="shell-brand">🧭 Centro de Servicio</div>
+  <button class="shell-tab active" data-mod="inicio">Inicio</button>
+  <button class="shell-tab" data-mod="secretario">Secretario</button>
+  <button class="shell-tab" data-mod="gather">Gather</button>
+  <button class="shell-tab" data-mod="bautizapp">BautizApp</button>
+  <button class="shell-tab" data-mod="ajustes">⚙️ Ajustes</button>
+</div>
+<div id="moduleHost"></div>
+
+<script>
+const SECRETARIO_BODY_HTML = `
+<div class="app-header">
+  <div class="header-top">
+    <div>
+      <h1 id="appTitle">Cuaderno</h1>
+      <div class="sub" id="appSub">—</div>
+    </div>
+    <div class="header-actions">
+      <button class="ctrl-teal" id="btnRoles" title="Llamamientos">⚙️</button>
+      <button class="ctrl-teal" id="btnLang">EN</button>
+    </div>
+  </div>
+</div>
+<main>
+  <div class="stats-row" id="statsRow"></div>
+  <div class="privacy-note" id="privacyNote"></div>
+  <nav class="view-toggle" id="tabs"></nav>
+  <div id="panelHost"></div>
+  <div class="footer-note" id="footerNote"></div>
+</main>
+<div class="toast" id="toast"></div>
+
+<div class="modal-overlay" id="roleModal" onclick="if(event.target===this) saveRolesAndClose()">
+  <div class="modal-box">
+    <h2 id="roleModalTitle">Tus llamamientos</h2>
+    <div class="card-sub" id="roleModalSub">Selecciona uno o más — puedes cambiarlos cuando quieras.</div>
+    <div id="roleModalBody"></div>
+    <button class="btn-full" id="roleModalDone" onclick="saveRolesAndClose()">Listo</button>
+  </div>
+</div>
+`;
+
+
+const SecretarioModule = (function(){
+
+const T = {
+  es: {
+    title:"Cuaderno del Secretario", sub:"Secretario · Cuórum / Sociedad de Socorro",
+    tabAgenda:"Agenda", tabMinutas:"Minutas", tabTareas:"Asignaciones", tabMin:"Ministración", tabReporte:"Reporte",
+    privacy:"Herramienta de organización — no reemplaza LCR y no debe contener información confidencial o disciplinaria.",
+    statAsign:"asignaciones pendientes", statMin:"minutas este mes", statAlert:"necesitan atención",
+    agendaTitle:"Agenda de la reunión de presidencia", agendaSub:"Marca lo tratado. Se reinicia al iniciar una minuta nueva.",
+    addItem:"Añadir punto…", respPh:"Responsable", newMeeting:"Archivar y comenzar nueva reunión",
+    meetingDate:"Fecha", meetingTime:"Hora", archived:"¡Agenda archivada en el historial!",
+    shareWA:"WhatsApp", shareEmail:"Correo", shareCopy:"Copiar",
+    historyAgendaTitle:"Historial de reuniones", noHistoryAgenda:"Aún no hay reuniones archivadas.",
+    itemsDoneOf:"puntos tratados", agendaShareHeader:"AGENDA — Reunión de presidencia", agendaShareDate:"Fecha:",
+    minutasTitle:"Minuta de hoy", minutasSub:"Escribe lo tratado en la reunión de presidencia.",
+    minutaPh:"Asistentes, temas tratados, decisiones, acuerdos…", saveMinuta:"Guardar minuta", saved:"¡Minuta guardada!",
+    history:"Historial", noMinutas:"Aún no hay minutas guardadas.",
+    editMinuta:"Editar", saveEdit:"Guardar cambios", cancelEdit:"Cancelar",
+    editedOn:"Editada", createdOn:"Creada", viewChanges:"Ver historial de cambios", versionOf:"Versión del",
+    noChanges:"Sin ediciones registradas.",
+    deleteMinuta:"Eliminar", restoreMinuta:"Restaurar", confirmDelete:"¿Eliminar esta minuta? Quedará marcada como eliminada en el historial, no se borra de verdad.",
+    deletedOn:"Eliminada", deletedTag:"ELIMINADA", restored:"Minuta restaurada", movedToTrash:"Movida a la papelera",
+    trash:"Papelera", noTrash:"No hay elementos eliminados.",
+    tareasTitle:"Asignaciones y seguimientos", tareasSub:"Quién quedó de hacer qué.",
+    whoPh:"Nombre de la persona", whatPh:"¿Qué se asignó?", addTask:"Agregar", taskAdded:"Asignación agregada",
+    noTasks:"No hay asignaciones pendientes.", pending:"Pendiente", done:"Hecho",
+    minTitle:"Ministración — vista de preparación", minSub:"Para prepararte antes de la reunión. La entrevista oficial se registra en LCR.",
+    minLcrNote:"Esta lista es tu apunte personal, no el registro oficial. Registra las entrevistas de ministración en LCR — así lo indica el Manual General.",
+    compPh:"Nombre(s) del/los ministrante(s)", famPh:"Familia o persona asignada",
+    lastContact:"Último contacto:", never:"Sin registro", addComp:"Agregar", compAdded:"Compañerismo agregado",
+    markVisited:"Visitado hoy", noComp:"Aún no hay compañerismos registrados.",
+    noFamAssigned:"Sin familias/personas asignadas todavía.", famAdded:"Familia agregada",
+    viewRemovedFamilies:"Ver eliminadas",
+    alertDays:"más de 30 días sin contacto",
+    reportTitle:"Reporte mensual", reportSub:"Resumen listo para compartir con la presidencia.",
+    copyReport:"Copiar al portapapeles", copied:"¡Copiado!",
+    reportHeader:"REPORTE MENSUAL", reportTasksDone:"Asignaciones completadas:", reportTasksPending:"Asignaciones pendientes:",
+    reportMinAttn:"Compañerismos que necesitan atención:", reportMinutas:"Minutas registradas este mes:",
+    footNote:"Cuaderno del Secretario — organización, no reemplaza LCR.", days:"días",
+    subNoRole:"Selecciona tu llamamiento", rolesModalTitle:"Tus llamamientos",
+    rolesModalSub:"Selecciona uno o más — puedes cambiarlos cuando quieras.", rolesDone:"Listo",
+    role_cuorum_sds:"Cuórum de Élderes / Sociedad de Socorro", roleDesc_cuorum_sds:"Agenda, minutas, asignaciones y seguimiento de ministración.",
+    role_ejecutivo:"Secretario Ejecutivo", roleDesc_ejecutivo:"Agenda, minutas, asignaciones y cola de entrevistas con el obispo.",
+    role_obispado:"Secretario de Obispado", roleDesc_obispado:"Agenda, minutas, asignaciones y asistencia al consejo de barrio.",
+    role_ed:"Escuela Dominical", roleDesc_ed:"Agenda, minutas, asignaciones y seguimiento de maestros por clase.",
+    tabEntrevistas:"Entrevistas", entrevistasTitle:"Cola de entrevistas", entrevistasSub:"Quién necesita hablar con el obispo y para qué.",
+    nombrePh:"Nombre de la persona", motivoPh:"Motivo de la entrevista", fechaPh:"Fecha (opcional)",
+    addEntrevista:"Agregar", entrevistaAdded:"Entrevista agregada", noEntrevistas:"No hay entrevistas pendientes.",
+    estPendiente:"Pendiente", estAgendada:"Agendada", estHecha:"Hecha",
+    tabConsejo:"Consejo", consejoTitle:"Consejo de barrio", consejoSub:"Marca quién estuvo presente y anota lo tratado.",
+    consejoNotasPh:"Temas tratados, acuerdos…", archiveConsejo:"Archivar y comenzar nuevo consejo", consejoArchived:"¡Consejo archivado en el historial!",
+    consejoHistoryTitle:"Historial de consejos", noConsejoHistory:"Aún no hay consejos archivados.",
+    presentesOf:"presentes", consejoAddItem:"Añadir organización…",
+    tabClases:"Clases", clasesTitle:"Clases y maestros", clasesSub:"Seguimiento de maestros asignados por clase.",
+    clasePh:"Nombre de la clase", maestroPh:"Maestro asignado", addClase:"Agregar", claseAdded:"Clase agregada",
+    noClases:"No hay clases registradas.", sinMaestro:"Sin maestro", asignado:"Asignado",
+    reportEntrevistas:"Entrevistas pendientes/agendadas:", reportClasesSinMaestro:"Clases sin maestro asignado:",
+    reportConsejo:"Último consejo de barrio:",
+    tabLlamamientos:"Llamamientos", llamamientosTitle:"Llamamientos en consideración", llamamientosSub:"Seguimiento privado antes de extenderse formalmente.",
+    llamamientosWarning:"Información sensible: compártela solo con quienes deben saberlo. Cuando el llamamiento se extienda formalmente en LCR, elimina la entrada de aquí.",
+    personaPh:"Nombre de la persona", llamamientoPh:"Llamamiento propuesto", addLlamamiento:"Agregar", llamamientoAdded:"Agregado",
+    noLlamamientos:"No hay llamamientos en consideración.",
+    estOrando:"Orando", estPropuesto:"Propuesto", estExtendido:"Extendido",
+    tabRotaciones:"Rotaciones", rotacionesTitle:"Asignaciones rotativas", rotacionesSub:"Turnos recurrentes: ordenanzas, oraciones, limpieza, etc.",
+    tareaRotPh:"Nombre de la asignación (ej. Ordenanzas del templo)", personasRotPh:"Personas en el turno, separadas por coma",
+    addRotacion:"Agregar", rotacionAdded:"Rotación agregada", noRotaciones:"No hay rotaciones registradas.",
+    turnoActualLabel:"Turno actual:", ordenLabel:"Orden:", avanzarTurno:"Avanzar turno", turnAdvanced:"Turno avanzado",
+    viewTurnHistory:"Ver historial de turnos", noTurnHistory:"Aún no se ha avanzado ningún turno.",
+    reportRotaciones:"Turno actual de rotaciones:",
+    tabHoy:"Hoy", hoyTitle:"Resumen de hoy", hoySub:"Lo más urgente de tus módulos activos, en un solo lugar.",
+    goTo:"Ver →", hoyNoRole:"Aún no has seleccionado un llamamiento — toca ⚙️ para elegirlo.",
+    hoyAgendaLine:"puntos tratados", hoyNoAgenda:"No hay agenda activa todavía.",
+    hoyTareasEmpty:"Sin asignaciones pendientes.", hoyMinEmpty:"Nadie necesita atención por ahora.",
+    hoyEntEmpty:"Sin entrevistas pendientes.", hoyConsejoEmpty:"Aún no hay consejos archivados.",
+    hoyClasesEmpty:"Todas las clases tienen maestro.", hoyLlamEmpty:"Sin llamamientos en consideración.",
+    hoyRotEmpty:"No hay rotaciones registradas.", enConsideracion:"en consideración"
+  },
+  en: {
+    title:"Secretary's Notebook", sub:"Secretary · Quorum / Relief Society",
+    tabAgenda:"Agenda", tabMinutas:"Minutes", tabTareas:"Assignments", tabMin:"Ministering", tabReporte:"Report",
+    privacy:"Organization tool — does not replace LCR and should hold no confidential or disciplinary information.",
+    statAsign:"pending assignments", statMin:"minutes this month", statAlert:"need attention",
+    agendaTitle:"Presidency meeting agenda", agendaSub:"Check off items as you go. Resets when you start a new meeting.",
+    addItem:"Add item…", respPh:"Assigned to", newMeeting:"Archive & start new meeting",
+    meetingDate:"Date", meetingTime:"Time", archived:"Agenda archived to history!",
+    shareWA:"WhatsApp", shareEmail:"Email", shareCopy:"Copy",
+    historyAgendaTitle:"Meeting history", noHistoryAgenda:"No archived meetings yet.",
+    itemsDoneOf:"items covered", agendaShareHeader:"AGENDA — Presidency meeting", agendaShareDate:"Date:",
+    minutasTitle:"Today's minutes", minutasSub:"Write up what was covered in the presidency meeting.",
+    minutaPh:"Attendees, topics covered, decisions, follow-ups…", saveMinuta:"Save minutes", saved:"Minutes saved!",
+    history:"History", noMinutas:"No minutes saved yet.",
+    editMinuta:"Edit", saveEdit:"Save changes", cancelEdit:"Cancel",
+    editedOn:"Edited", createdOn:"Created", viewChanges:"View edit history", versionOf:"Version from",
+    noChanges:"No edits recorded.",
+    deleteMinuta:"Delete", restoreMinuta:"Restore", confirmDelete:"Delete this entry? It will be marked as deleted in the history, not actually erased.",
+    deletedOn:"Deleted", deletedTag:"DELETED", restored:"Entry restored", movedToTrash:"Moved to trash",
+    trash:"Trash", noTrash:"No deleted items.",
+    tareasTitle:"Assignments & follow-ups", tareasSub:"Who agreed to do what.",
+    whoPh:"Person's name", whatPh:"What was assigned?", addTask:"Add", taskAdded:"Assignment added",
+    noTasks:"No pending assignments.", pending:"Pending", done:"Done",
+    minTitle:"Ministering — prep view", minSub:"For meeting prep. The official interview is recorded in LCR.",
+    minLcrNote:"This list is your personal note, not the official record. Log ministering interviews in LCR — as the General Handbook instructs.",
+    compPh:"Minister(s) name(s)", famPh:"Assigned family or person",
+    lastContact:"Last contact:", never:"No record", addComp:"Add", compAdded:"Companionship added",
+    markVisited:"Visited today", noComp:"No companionships added yet.",
+    noFamAssigned:"No families/persons assigned yet.", famAdded:"Family added",
+    viewRemovedFamilies:"View removed",
+    alertDays:"no contact in 30+ days",
+    reportTitle:"Monthly report", reportSub:"Summary ready to share with the presidency.",
+    copyReport:"Copy to clipboard", copied:"Copied!",
+    reportHeader:"MONTHLY REPORT", reportTasksDone:"Completed assignments:", reportTasksPending:"Pending assignments:",
+    reportMinAttn:"Companionships needing attention:", reportMinutas:"Minutes logged this month:",
+    footNote:"Secretary's Notebook — organization only, not a replacement for LCR.", days:"days",
+    subNoRole:"Select your calling", rolesModalTitle:"Your callings",
+    rolesModalSub:"Select one or more — you can change these anytime.", rolesDone:"Done",
+    role_cuorum_sds:"Elders Quorum / Relief Society", roleDesc_cuorum_sds:"Agenda, minutes, assignments and ministering tracking.",
+    role_ejecutivo:"Executive Secretary", roleDesc_ejecutivo:"Agenda, minutes, assignments and the bishop's interview queue.",
+    role_obispado:"Bishopric Secretary", roleDesc_obispado:"Agenda, minutes, assignments and ward council attendance.",
+    role_ed:"Sunday School", roleDesc_ed:"Agenda, minutes, assignments and teacher tracking per class.",
+    tabEntrevistas:"Interviews", entrevistasTitle:"Interview queue", entrevistasSub:"Who needs to talk to the bishop, and why.",
+    nombrePh:"Person's name", motivoPh:"Reason for the interview", fechaPh:"Date (optional)",
+    addEntrevista:"Add", entrevistaAdded:"Interview added", noEntrevistas:"No pending interviews.",
+    estPendiente:"Pending", estAgendada:"Scheduled", estHecha:"Done",
+    tabConsejo:"Council", consejoTitle:"Ward council", consejoSub:"Mark who was present and note what was covered.",
+    consejoNotasPh:"Topics covered, decisions…", archiveConsejo:"Archive & start new council", consejoArchived:"Council archived to history!",
+    consejoHistoryTitle:"Council history", noConsejoHistory:"No archived councils yet.",
+    presentesOf:"present", consejoAddItem:"Add organization…",
+    tabClases:"Classes", clasesTitle:"Classes & teachers", clasesSub:"Tracking assigned teachers per class.",
+    clasePh:"Class name", maestroPh:"Assigned teacher", addClase:"Add", claseAdded:"Class added",
+    noClases:"No classes recorded.", sinMaestro:"No teacher", asignado:"Assigned",
+    reportEntrevistas:"Pending/scheduled interviews:", reportClasesSinMaestro:"Classes with no teacher:",
+    reportConsejo:"Last ward council:",
+    tabLlamamientos:"Callings", llamamientosTitle:"Callings under consideration", llamamientosSub:"Private tracking before it's formally extended.",
+    llamamientosWarning:"Sensitive information: share only with those who need to know. Once the calling is formally extended in LCR, delete the entry here.",
+    personaPh:"Person's name", llamamientoPh:"Proposed calling", addLlamamiento:"Add", llamamientoAdded:"Added",
+    noLlamamientos:"No callings under consideration.",
+    estOrando:"Praying about", estPropuesto:"Proposed", estExtendido:"Extended",
+    tabRotaciones:"Rotations", rotacionesTitle:"Rotating assignments", rotacionesSub:"Recurring turns: ordinances, prayers, cleaning, etc.",
+    tareaRotPh:"Assignment name (e.g. Temple ordinances)", personasRotPh:"People in the rotation, comma-separated",
+    addRotacion:"Add", rotacionAdded:"Rotation added", noRotaciones:"No rotations recorded.",
+    turnoActualLabel:"Current turn:", ordenLabel:"Order:", avanzarTurno:"Advance turn", turnAdvanced:"Turn advanced",
+    viewTurnHistory:"View turn history", noTurnHistory:"No turns advanced yet.",
+    reportRotaciones:"Current rotation turn:",
+    tabHoy:"Today", hoyTitle:"Today's summary", hoySub:"The most urgent items from your active modules, in one place.",
+    goTo:"View →", hoyNoRole:"You haven't selected a calling yet — tap ⚙️ to choose one.",
+    hoyAgendaLine:"items covered", hoyNoAgenda:"No active agenda yet.",
+    hoyTareasEmpty:"No pending assignments.", hoyMinEmpty:"No one needs attention right now.",
+    hoyEntEmpty:"No pending interviews.", hoyConsejoEmpty:"No archived councils yet.",
+    hoyClasesEmpty:"All classes have a teacher.", hoyLlamEmpty:"No callings under consideration.",
+    hoyRotEmpty:"No rotations recorded.", enConsideracion:"under consideration"
+  }
+};
+
+const DEFAULT_AGENDA = {
+  es:["Oración de apertura","Revisión de asignaciones anteriores","Necesidades de ministración","Bienestar y autosuficiencia","Actividades y calendario","Nuevos miembros y menos activos","Oración de clausura"],
+  en:["Opening prayer","Review of previous assignments","Ministering needs","Welfare and self-reliance","Activities and calendar","New and less-active members","Closing prayer"]
+};
+const DEFAULT_CONSEJO_ITEMS = {
+  es:["Obispado","Cuórum de Élderes","Sociedad de Socorro","Escuela Dominical","Mutual","Primaria","Secretario ejecutivo"],
+  en:["Bishopric","Elders Quorum","Relief Society","Sunday School","Young Men/Young Women","Primary","Executive secretary"]
+};
+const ROLES = {
+  cuorum_sds: { tab:'ministracion' },
+  ejecutivo: { tab:'entrevistas' },
+  obispado: { tab:'consejo' },
+  ed: { tab:'clases' }
+};
+
+let state = null;
+let currentTab = 'hoy';
+const KEY = 'secretaria-data';
+
+function todayDateStr(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function nowTimeStr(){ const d=new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+
+function defaultState(){
+  return {
+    lang:'es',
+    roles: [],
+    agenda: DEFAULT_AGENDA.es.map(t=>({text:t, done:false, resp:''})),
+    agendaMeta: { date: todayDateStr(), time: nowTimeStr() },
+    agendaHistory: [],
+    minutas:[], tareas:[], ministracion:[],
+    entrevistas: [],
+    clases: [],
+    llamamientos: [],
+    rotaciones: [],
+    consejo: {
+      current: { date: todayDateStr(), time: nowTimeStr(), items: DEFAULT_CONSEJO_ITEMS.es.map(t=>({text:t, done:false})), notas:'' },
+      history: []
+    }
+  };
+}
+async function loadState(){
+  try{ const res = await window.storage.get(KEY, false); state = res ? JSON.parse(res.value) : defaultState(); }
+  catch(e){ state = defaultState(); }
+  state.agenda.forEach(it=>{ if(it.resp===undefined) it.resp=''; });
+  if(!state.agendaMeta) state.agendaMeta = { date: todayDateStr(), time: nowTimeStr() };
+  if(!state.agendaHistory) state.agendaHistory = [];
+  if(!state.roles) state.roles = state.ministracion && state.ministracion.length ? ['cuorum_sds'] : [];
+  if(!state.entrevistas) state.entrevistas = [];
+  if(!state.clases) state.clases = [];
+  if(!state.llamamientos) state.llamamientos = [];
+  if(!state.rotaciones) state.rotaciones = [];
+  if(!state.consejo) state.consejo = {
+    current: { date: todayDateStr(), time: nowTimeStr(), items: DEFAULT_CONSEJO_ITEMS[state.lang].map(t=>({text:t, done:false})), notas:'' },
+    history: []
+  };
+  state.minutas.forEach(m=>{
+    if(!m.history) m.history=[];
+    if(m.editedAt===undefined) m.editedAt=null;
+    if(m.deleted===undefined) m.deleted=false;
+    if(m.deletedAt===undefined) m.deletedAt=null;
+  });
+  state.tareas.forEach(x=>{
+    if(!x.history) x.history=[];
+    if(x.editedAt===undefined) x.editedAt=null;
+    if(x.deleted===undefined) x.deleted=false;
+    if(x.deletedAt===undefined) x.deletedAt=null;
+    if(x.createdAt===undefined) x.createdAt=new Date().toISOString();
+  });
+  state.ministracion.forEach(c=>{
+    if(c.deleted===undefined) c.deleted=false;
+    if(c.deletedAt===undefined) c.deletedAt=null;
+    if(c.createdAt===undefined) c.createdAt=new Date().toISOString();
+    if(!c.asignaciones){
+      // migración del modelo viejo (un compañerismo = una sola familia) al nuevo (varias familias por compañerismo)
+      c.asignaciones = [];
+      if(c.family){
+        c.asignaciones.push({
+          family: c.family, lastContact: c.lastContact || null,
+          createdAt: c.createdAt, deleted:false, deletedAt:null
+        });
+      }
+      delete c.family; delete c.lastContact; delete c.history; delete c.editedAt;
+    }
+    c.asignaciones.forEach(f=>{
+      if(f.deleted===undefined) f.deleted=false;
+      if(f.deletedAt===undefined) f.deletedAt=null;
+      if(f.createdAt===undefined) f.createdAt=new Date().toISOString();
+    });
+  });
+  state.entrevistas.forEach(x=>{
+    if(!x.history) x.history=[];
+    if(x.editedAt===undefined) x.editedAt=null;
+    if(x.deleted===undefined) x.deleted=false;
+    if(x.deletedAt===undefined) x.deletedAt=null;
+    if(x.createdAt===undefined) x.createdAt=new Date().toISOString();
+    if(x.estado===undefined) x.estado='pendiente';
+    if(x.fecha===undefined) x.fecha='';
+  });
+  state.clases.forEach(x=>{
+    if(!x.history) x.history=[];
+    if(x.editedAt===undefined) x.editedAt=null;
+    if(x.deleted===undefined) x.deleted=false;
+    if(x.deletedAt===undefined) x.deletedAt=null;
+    if(x.createdAt===undefined) x.createdAt=new Date().toISOString();
+  });
+  state.llamamientos.forEach(x=>{
+    if(!x.history) x.history=[];
+    if(x.editedAt===undefined) x.editedAt=null;
+    if(x.deleted===undefined) x.deleted=false;
+    if(x.deletedAt===undefined) x.deletedAt=null;
+    if(x.createdAt===undefined) x.createdAt=new Date().toISOString();
+    if(x.estado===undefined) x.estado='orando';
+  });
+  state.rotaciones.forEach(x=>{
+    if(!x.history) x.history=[];
+    if(x.editedAt===undefined) x.editedAt=null;
+    if(x.deleted===undefined) x.deleted=false;
+    if(x.deletedAt===undefined) x.deletedAt=null;
+    if(x.createdAt===undefined) x.createdAt=new Date().toISOString();
+    if(x.turnoActual===undefined) x.turnoActual=0;
+    if(!x.turnHistory) x.turnHistory=[];
+  });
+  render();
+  if(state.roles.length===0) openRoleModal();
+}
+let bgRetryTimer = null;
+let saveFailedOnce = false;
+async function saveState(){
+  for(let attempt=0; attempt<3; attempt++){
+    try{
+      await window.storage.set(KEY, JSON.stringify(state), false);
+      saveFailedOnce = false;
+      if(bgRetryTimer){ clearTimeout(bgRetryTimer); bgRetryTimer=null; }
+      return;
+    }catch(e){
+      console.error(`Storage error (intento ${attempt+1}/3)`, e);
+      if(attempt<2) await new Promise(r=>setTimeout(r, 600*(attempt+1)));
+    }
+  }
+  if(!saveFailedOnce){
+    saveFailedOnce = true;
+    toast(state.lang==='es' ? 'Guardado local; sincronizando en segundo plano…' : 'Saved locally; syncing in background…');
+  }
+  scheduleBackgroundRetry();
+}
+function scheduleBackgroundRetry(){
+  if(bgRetryTimer) return;
+  bgRetryTimer = setTimeout(async ()=>{
+    bgRetryTimer = null;
+    try{
+      await window.storage.set(KEY, JSON.stringify(state), false);
+      saveFailedOnce = false;
+    }catch(e){
+      scheduleBackgroundRetry();
+    }
+  }, 6000);
+}
+function t(k){ return T[state.lang][k]; }
+function toast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 1600);
+}
+function toggleLang(){ state.lang = state.lang==='es'?'en':'es'; saveState(); render(); }
+
+/* ---- Selector de llamamientos ---- */
+function renderRoleModal(){
+  document.getElementById('roleModalTitle').textContent = t('rolesModalTitle');
+  document.getElementById('roleModalSub').textContent = t('rolesModalSub');
+  document.getElementById('roleModalDone').textContent = t('rolesDone');
+  document.getElementById('roleModalBody').innerHTML = Object.keys(ROLES).map(key=>{
+    const checked = state.roles.includes(key);
+    return `<label class="role-option">
+      <input type="checkbox" ${checked?'checked':''} onchange="toggleRole('${key}')">
+      <div><div class="role-label">${t('role_'+key)}</div><div class="role-desc">${t('roleDesc_'+key)}</div></div>
+    </label>`;
+  }).join('');
+}
+function openRoleModal(){ renderRoleModal(); document.getElementById('roleModal').classList.add('open'); }
+function closeRoleModal(){ document.getElementById('roleModal').classList.remove('open'); }
+function toggleRole(key){
+  const idx = state.roles.indexOf(key);
+  if(idx>=0) state.roles.splice(idx,1); else state.roles.push(key);
+  saveState();
+  render();
+}
+function saveRolesAndClose(){ saveState(); closeRoleModal(); render(); }
+function toggleMenu(id, ev){
+  if(ev) ev.stopPropagation();
+  document.querySelectorAll('.dropdown-menu.open').forEach(m=>{ if(m.id!==id) m.classList.remove('open'); });
+  const el = document.getElementById(id);
+  if(el) el.classList.toggle('open');
+}
+document.addEventListener('click', ()=>{
+  document.querySelectorAll('.dropdown-menu.open').forEach(m=>m.classList.remove('open'));
+});
+function daysSince(d){ if(!d) return null; return Math.floor((Date.now()-new Date(d).getTime())/86400000); }
+function fmtDate(d){ return new Date(d).toLocaleDateString(state.lang==='es'?'es-ES':'en-US', {day:'numeric', month:'short', year:'numeric'}); }
+function fmtDateOnly(dstr){
+  if(!dstr) return '—';
+  const [y,m,d] = dstr.split('-').map(Number);
+  return new Date(y, m-1, d).toLocaleDateString(state.lang==='es'?'es-ES':'en-US', {day:'numeric', month:'short', year:'numeric'});
+}
+
+/* ---- Agenda ---- */
+function respWidth(v){ return Math.min(220, Math.max(92, (v||'').length*7+28)); }
+
+function buildAgendaText(meta, items){
+  const dateLabel = fmtDateOnly(meta.date) + (meta.time ? ' · '+meta.time : '');
+  const lines = [ t('agendaShareHeader'), `${t('agendaShareDate')} ${dateLabel}`, '' ];
+  items.forEach(it=>{
+    const mark = it.done ? '✅' : '⬜';
+    const resp = it.resp ? ` — ${t('respPh')}: ${it.resp}` : '';
+    lines.push(`${mark} ${it.text}${resp}`);
+  });
+  return lines.join('\n');
+}
+function shareAgenda(meta, items, channel){
+  const text = buildAgendaText(meta, items);
+  if(channel==='wa'){ window.open('https://wa.me/?text='+encodeURIComponent(text), '_blank'); }
+  else if(channel==='mail'){ window.location.href = 'mailto:?subject='+encodeURIComponent(t('agendaShareHeader'))+'&body='+encodeURIComponent(text); }
+  else { navigator.clipboard.writeText(text).then(()=>toast(t('copied'))); }
+}
+function shareCurrentAgenda(channel){ shareAgenda(state.agendaMeta, state.agenda, channel); }
+function shareHistoryAgenda(idx, channel){ const h = state.agendaHistory[idx]; shareAgenda({date:h.date, time:h.time}, h.items, channel); }
+
+function updateAgendaDate(v){ state.agendaMeta.date = v; saveState(); }
+function updateAgendaTime(v){ state.agendaMeta.time = v; saveState(); }
+
+function renderAgenda(){
+  const rows = state.agenda.map((it,i)=>`
+    <div class="check-item ${it.done?'checked':''}">
+      <input type="checkbox" ${it.done?'checked':''} onchange="toggleAgendaItem(${i})">
+      <span>${it.text}</span>
+      <div class="row-right">
+        <input class="resp-input" placeholder="${t('respPh')}" value="${(it.resp||'').replace(/"/g,'&quot;')}"
+          style="width:${respWidth(it.resp)}px"
+          oninput="this.style.width=respWidth(this.value)+'px'"
+          onchange="updateAgendaResp(${i}, this.value)">
+        <span class="row-del" onclick="removeAgendaItem(${i})">✕</span>
+      </div>
+    </div>`).join('');
+
+  const mainCard = `<div class="card">
+    <div class="card-header-row">
+      <div><h2>${t('agendaTitle')}</h2><div class="card-sub">${t('agendaSub')}</div></div>
+      <div class="menu-wrap">
+        <button class="icon-btn" onclick="toggleMenu('agendaMenu', event)">⋮</button>
+        <div class="dropdown-menu" id="agendaMenu">
+          <button onclick="shareCurrentAgenda('wa'); toggleMenu('agendaMenu', event)">💬 ${t('shareWA')}</button>
+          <button onclick="shareCurrentAgenda('mail'); toggleMenu('agendaMenu', event)">✉️ ${t('shareEmail')}</button>
+          <button onclick="shareCurrentAgenda('copy'); toggleMenu('agendaMenu', event)">📋 ${t('shareCopy')}</button>
+          <div class="divider"></div>
+          <button class="danger" onclick="newMeeting(); toggleMenu('agendaMenu', event)">🗂️ ${t('newMeeting')}</button>
+        </div>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>${t('meetingDate')}</label>
+        <input type="date" value="${state.agendaMeta.date||''}" onchange="updateAgendaDate(this.value)"></div>
+      <div class="field"><label>${t('meetingTime')}</label>
+        <input type="time" value="${state.agendaMeta.time||''}" onchange="updateAgendaTime(this.value)"></div>
+    </div>
+    <div style="margin-top:14px;">
+    ${rows || `<div class="empty">—</div>`}
+    </div>
+    <div class="add-row">
+      <input id="newItemInput" placeholder="${t('addItem')}" onkeydown="if(event.key==='Enter')addAgendaItem()">
+      <input id="newItemResp" class="resp-input" style="width:110px;" placeholder="${t('respPh')}"
+        oninput="this.style.width=respWidth(this.value)+'px'" onkeydown="if(event.key==='Enter')addAgendaItem()">
+      <button onclick="addAgendaItem()">+</button>
+    </div>
+  </div>`;
+
+  const histEntries = state.agendaHistory.map((h,idx)=>({h,idx})).reverse();
+  const histRows = histEntries.map(({h,idx})=>{
+    const doneCount = h.items.filter(x=>x.done).length;
+    const menuId = 'histMenu'+idx;
+    return `<div class="minuta-entry">
+      <div class="stamp">${fmtDateOnly(h.date)}</div>
+      <div class="txt" style="flex:1;">
+        <div class="card-header-row" style="align-items:center;">
+          <div>
+            <div style="font-weight:700;color:var(--deep-water);">${fmtDateOnly(h.date)}${h.time?' · '+h.time:''}</div>
+            <div style="font-size:.78rem;color:#7a6f52;">${doneCount}/${h.items.length} ${t('itemsDoneOf')}</div>
+          </div>
+          <div class="menu-wrap">
+            <button class="icon-btn" onclick="toggleMenu('${menuId}', event)">⋮</button>
+            <div class="dropdown-menu" id="${menuId}">
+              <button onclick="shareHistoryAgenda(${idx},'wa'); toggleMenu('${menuId}', event)">💬 ${t('shareWA')}</button>
+              <button onclick="shareHistoryAgenda(${idx},'mail'); toggleMenu('${menuId}', event)">✉️ ${t('shareEmail')}</button>
+              <button onclick="shareHistoryAgenda(${idx},'copy'); toggleMenu('${menuId}', event)">📋 ${t('shareCopy')}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  const historyCard = `<div class="card"><h2 style="font-size:.9rem;">${t('historyAgendaTitle')}</h2>
+    ${histRows || `<div class="empty">${t('noHistoryAgenda')}</div>`}</div>`;
+
+  return mainCard + historyCard;
+}
+function toggleAgendaItem(i){ state.agenda[i].done=!state.agenda[i].done; saveState(); render(); }
+function removeAgendaItem(i){ state.agenda.splice(i,1); saveState(); render(); }
+function updateAgendaResp(i, val){ state.agenda[i].resp = val; saveState(); }
+function addAgendaItem(){
+  const el=document.getElementById('newItemInput');
+  const respEl=document.getElementById('newItemResp');
+  if(el.value.trim()){
+    state.agenda.push({text:el.value.trim(), done:false, resp:(respEl?respEl.value.trim():'')});
+    el.value=''; if(respEl) respEl.value='';
+    saveState(); render();
+  }
+}
+function newMeeting(){
+  state.agendaHistory.push({
+    date: state.agendaMeta.date,
+    time: state.agendaMeta.time,
+    items: state.agenda.map(it=>({text:it.text, done:it.done, resp:it.resp})),
+    archivedAt: new Date().toISOString()
+  });
+  state.agenda = state.agenda.map(it=>({...it, done:false, resp:''}));
+  state.agendaMeta = { date: todayDateStr(), time: nowTimeStr() };
+  saveState(); render(); toast(t('archived'));
+}
+
+/* ---- Minutas ---- */
+let editingMinutaIndex = null;
+let openHistoryIndices = new Set();
+let showTrash = false;
+function toggleHistoryView(idx){
+  if(openHistoryIndices.has(idx)) openHistoryIndices.delete(idx); else openHistoryIndices.add(idx);
+  render();
+}
+function toggleTrash(){ showTrash = !showTrash; render(); }
+
+function renderMinutaRow(m, idx){
+  if(editingMinutaIndex === idx){
+    return `<div class="minuta-row">
+      <div class="stamp-mini">${fmtDate(m.date)}</div>
+      <div class="body">
+        <textarea class="minuta" id="editMinutaInput" style="min-height:100px;">${m.text.replace(/</g,'&lt;')}</textarea>
+        <div class="share-row" style="margin-top:8px;">
+          <button class="share-btn" style="background:var(--living-teal);flex:0 0 auto;padding:8px 14px;font-size:.74rem;" onclick="saveEditMinuta(${idx})">${t('saveEdit')}</button>
+          <button class="share-btn" style="background:#9c8f6c;flex:0 0 auto;padding:8px 14px;font-size:.74rem;" onclick="cancelEditMinuta()">${t('cancelEdit')}</button>
+        </div>
+      </div>
+    </div>`;
+  }
+  const changesN = (m.history||[]).length;
+  const changesOpen = openHistoryIndices.has(idx);
+  const metaBits = [];
+  if(m.editedAt) metaBits.push(`${t('editedOn')} ${fmtDate(m.editedAt)}`);
+  if(m.deleted) metaBits.push(`<b style="color:var(--rojo);">${t('deletedOn')} ${fmtDate(m.deletedAt)}</b>`);
+  if(changesN>0) metaBits.push(`<span class="link" onclick="toggleHistoryView(${idx})">${t('viewChanges')} (${changesN})</span>`);
+  const changesPanel = (changesOpen && changesN>0) ? `
+    <div style="margin-top:6px;">
+      ${m.history.slice().reverse().map(v=>`
+        <div style="border-top:1px dashed var(--line);padding:6px 0;font-size:.78rem;">
+          <div style="font-size:.65rem;color:#a89e7f;margin-bottom:2px;">${t('versionOf')} ${fmtDate(v.at)}</div>
+          <div style="white-space:pre-wrap;color:#7a6f52;">${v.text.replace(/</g,'&lt;')}</div>
+        </div>`).join('')}
+    </div>` : '';
+  const actionBtn = m.deleted
+    ? `<button class="icon-btn" title="${t('restoreMinuta')}" onclick="restoreMinuta(${idx})">↺</button>`
+    : `<div style="display:flex;flex-direction:column;gap:6px;">
+        <button class="icon-btn" title="${t('editMinuta')}" onclick="startEditMinuta(${idx})">✏️</button>
+        <button class="icon-btn" title="${t('deleteMinuta')}" onclick="deleteMinuta(${idx})" style="color:var(--rojo);">🗑️</button>
+      </div>`;
+  return `<div class="minuta-row" style="${m.deleted?'opacity:.55;':''}">
+    <div class="stamp-mini">${fmtDate(m.date)}${m.deleted?`<div style="color:var(--rojo);margin-top:2px;">${t('deletedTag')}</div>`:''}</div>
+    <div class="body">
+      <div class="preview" style="${m.deleted?'text-decoration:line-through;':''}">${m.text.replace(/</g,'&lt;')}</div>
+      ${metaBits.length ? `<div class="meta-line">${metaBits.join(' · ')}</div>` : ''}
+      ${changesPanel}
+    </div>
+    ${actionBtn}
+  </div>`;
+}
+
+function renderMinutas(){
+  const allEntries = state.minutas.map((m,idx)=>({m,idx})).reverse();
+  const activeRows = allEntries.filter(({m})=>!m.deleted).map(({m,idx})=>renderMinutaRow(m,idx)).join('');
+  const trashRows = allEntries.filter(({m})=>m.deleted).map(({m,idx})=>renderMinutaRow(m,idx)).join('');
+  const deletedCount = state.minutas.filter(m=>m.deleted).length;
+
+  const trashCard = showTrash ? `<div class="card">
+    <h2 style="font-size:.9rem;">🗑️ ${t('trash')}</h2>
+    ${trashRows || `<div class="empty">${t('noTrash')}</div>`}
+  </div>` : '';
+
+  return `<div class="card">
+    <div class="card-header-row">
+      <div><h2>${t('minutasTitle')}</h2><div class="card-sub">${t('minutasSub')}</div></div>
+      <button class="icon-btn" title="${t('trash')}" onclick="toggleTrash()" style="position:relative;${showTrash?'background:var(--linen);':''}">
+        🗑️${deletedCount>0 ? `<span style="position:absolute;top:-6px;right:-6px;background:var(--rojo);color:white;border-radius:10px;font-size:.6rem;font-weight:700;padding:1px 5px;line-height:1.3;">${deletedCount}</span>` : ''}
+      </button>
+    </div>
+    <textarea class="minuta" id="minutaInput" placeholder="${t('minutaPh')}"></textarea>
+    <button class="btn-full" onclick="saveMinuta()">${t('saveMinuta')}</button>
+  </div>
+  ${trashCard}
+  <div class="card"><h2 style="font-size:.9rem;">${t('history')}</h2>
+  ${activeRows || `<div class="empty">${t('noMinutas')}</div>`}</div>`;
+}
+function saveMinuta(){
+  const el=document.getElementById('minutaInput');
+  if(el.value.trim()){
+    state.minutas.push({date:new Date().toISOString(), text:el.value.trim(), history:[], editedAt:null, deleted:false, deletedAt:null});
+    saveState(); render(); toast(t('saved'));
+  }
+}
+function startEditMinuta(idx){ editingMinutaIndex = idx; render(); }
+function cancelEditMinuta(){ editingMinutaIndex = null; render(); }
+function deleteMinuta(idx){
+  state.minutas[idx].deleted = true;
+  state.minutas[idx].deletedAt = new Date().toISOString();
+  saveState(); render(); toast(t('movedToTrash'));
+}
+function restoreMinuta(idx){
+  state.minutas[idx].deleted = false;
+  state.minutas[idx].deletedAt = null;
+  saveState(); render(); toast(t('restored'));
+}
+function saveEditMinuta(idx){
+  const el = document.getElementById('editMinutaInput');
+  const newText = el.value.trim();
+  if(!newText) return;
+  const m = state.minutas[idx];
+  if(!m.history) m.history = [];
+  m.history.push({ text: m.text, at: m.editedAt || m.date });
+  m.text = newText;
+  m.editedAt = new Date().toISOString();
+  editingMinutaIndex = null;
+  saveState(); render(); toast(t('saved'));
+}
+
+/* ---- Tareas ---- */
+let editingTaskIndex = null;
+let openTaskHistoryIndices = new Set();
+let showTareasTrash = false;
+function toggleTaskHistoryView(i){
+  if(openTaskHistoryIndices.has(i)) openTaskHistoryIndices.delete(i); else openTaskHistoryIndices.add(i);
+  render();
+}
+function toggleTareasTrash(){ showTareasTrash = !showTareasTrash; render(); }
+
+function renderTaskRow(task, i){
+  if(editingTaskIndex === i){
+    return `<div class="list-row">
+      <div class="field-row" style="margin-top:0;">
+        <div class="field"><input id="editTaskWho" value="${(task.who||'').replace(/"/g,'&quot;')}" placeholder="${t('whoPh')}"></div>
+        <div class="field"><input id="editTaskWhat" value="${(task.what||'').replace(/"/g,'&quot;')}" placeholder="${t('whatPh')}"></div>
+      </div>
+      <div class="share-row" style="margin-top:8px;">
+        <button class="share-btn" style="background:var(--living-teal);flex:0 0 auto;padding:8px 14px;font-size:.74rem;" onclick="saveEditTask(${i})">${t('saveEdit')}</button>
+        <button class="share-btn" style="background:#9c8f6c;flex:0 0 auto;padding:8px 14px;font-size:.74rem;" onclick="cancelEditTask()">${t('cancelEdit')}</button>
+      </div>
+    </div>`;
+  }
+  const changesN = (task.history||[]).length;
+  const changesOpen = openTaskHistoryIndices.has(i);
+  const metaBits = [];
+  if(task.createdAt) metaBits.push(`${t('createdOn')} ${fmtDate(task.createdAt)}`);
+  if(task.editedAt) metaBits.push(`${t('editedOn')} ${fmtDate(task.editedAt)}`);
+  if(task.deleted) metaBits.push(`<b style="color:var(--rojo);">${t('deletedOn')} ${fmtDate(task.deletedAt)}</b>`);
+  if(changesN>0) metaBits.push(`<span class="link" onclick="toggleTaskHistoryView(${i})">${t('viewChanges')} (${changesN})</span>`);
+  const changesPanel = (changesOpen && changesN>0) ? `
+    <div style="margin-top:6px;">
+      ${task.history.slice().reverse().map(v=>`
+        <div style="border-top:1px dashed var(--line);padding:6px 0;font-size:.78rem;">
+          <div style="font-size:.65rem;color:#a89e7f;margin-bottom:2px;">${t('versionOf')} ${fmtDate(v.at)}</div>
+          <div style="color:#7a6f52;"><b>${v.who}</b>: ${v.what}</div>
+        </div>`).join('')}
+    </div>` : '';
+  const actionBtns = task.deleted
+    ? `<button class="icon-btn" title="${t('restoreMinuta')}" onclick="restoreTask(${i})">↺</button>`
+    : `<div style="display:flex;gap:6px;">
+        <button class="icon-btn" title="${t('editMinuta')}" onclick="startEditTask(${i})">✏️</button>
+        <button class="icon-btn" title="${t('deleteMinuta')}" onclick="deleteTask(${i})" style="color:var(--rojo);">🗑️</button>
+      </div>`;
+  return `<div class="list-row" style="${task.deleted?'opacity:.55;':''}"><div class="row-top">
+    <div style="min-width:0;flex:1;">
+      <div class="who" style="${task.deleted?'text-decoration:line-through;':''}">${task.who}</div>
+      <div class="what">${task.what}</div>
+      ${metaBits.length ? `<div class="meta-line">${metaBits.join(' · ')}</div>` : ''}
+      ${changesPanel}
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+      ${task.deleted?'':`<span class="badge ${task.done?'done':'pending'}" onclick="toggleTask(${i})">${task.done?t('done'):t('pending')}</span>`}
+      ${actionBtns}
+    </div>
+  </div></div>`;
+}
+
+function renderTareas(){
+  const allEntries = state.tareas.map((task,i)=>({task,i})).reverse();
+  const activeRows = allEntries.filter(({task})=>!task.deleted).map(({task,i})=>renderTaskRow(task,i)).join('');
+  const trashRows = allEntries.filter(({task})=>task.deleted).map(({task,i})=>renderTaskRow(task,i)).join('');
+  const deletedCount = state.tareas.filter(x=>x.deleted).length;
+  const trashCard = showTareasTrash ? `<div class="card">
+    <h2 style="font-size:.9rem;">🗑️ ${t('trash')}</h2>
+    ${trashRows || `<div class="empty">${t('noTrash')}</div>`}
+  </div>` : '';
+  return `<div class="card">
+    <div class="card-header-row">
+      <div><h2>${t('tareasTitle')}</h2><div class="card-sub">${t('tareasSub')}</div></div>
+      <button class="icon-btn" title="${t('trash')}" onclick="toggleTareasTrash()" style="position:relative;${showTareasTrash?'background:var(--linen);':''}">
+        🗑️${deletedCount>0 ? `<span style="position:absolute;top:-6px;right:-6px;background:var(--rojo);color:white;border-radius:10px;font-size:.6rem;font-weight:700;padding:1px 5px;line-height:1.3;">${deletedCount}</span>` : ''}
+      </button>
+    </div>
+    ${activeRows || `<div class="empty">${t('noTasks')}</div>`}
+    <div class="field-row">
+      <div class="field"><input id="taskWho" placeholder="${t('whoPh')}"></div>
+      <div class="field"><input id="taskWhat" placeholder="${t('whatPh')}"></div>
+    </div>
+    <button class="btn-full" onclick="addTask()">${t('addTask')}</button>
+  </div>
+  ${trashCard}`;
+}
+function addTask(){
+  const who=document.getElementById('taskWho'), what=document.getElementById('taskWhat');
+  if(who.value.trim() && what.value.trim()){
+    state.tareas.push({
+      who:who.value.trim(), what:what.value.trim(), done:false,
+      createdAt:new Date().toISOString(), history:[], editedAt:null, deleted:false, deletedAt:null
+    });
+    who.value=''; what.value=''; saveState(); render(); toast(t('taskAdded'));
+  }
+}
+function toggleTask(i){ if(state.tareas[i].deleted) return; state.tareas[i].done=!state.tareas[i].done; saveState(); render(); }
+function startEditTask(i){ editingTaskIndex=i; render(); }
+function cancelEditTask(){ editingTaskIndex=null; render(); }
+function saveEditTask(i){
+  const who = document.getElementById('editTaskWho').value.trim();
+  const what = document.getElementById('editTaskWhat').value.trim();
+  if(!who || !what) return;
+  const task = state.tareas[i];
+  if(!task.history) task.history=[];
+  task.history.push({ who: task.who, what: task.what, at: task.editedAt || task.createdAt });
+  task.who = who; task.what = what; task.editedAt = new Date().toISOString();
+  editingTaskIndex = null;
+  saveState(); render(); toast(t('saved'));
+}
+function deleteTask(i){
+  state.tareas[i].deleted = true; state.tareas[i].deletedAt = new Date().toISOString();
+  saveState(); render(); toast(t('movedToTrash'));
+}
+function restoreTask(i){
+  state.tareas[i].deleted = false; state.tareas[i].deletedAt = null;
+  saveState(); render(); toast(t('restored'));
+}
+
+/* ---- Ministracion (compañerismos con familias/personas asignadas) ---- */
+let showMinTrash = false;
+let openFamTrash = new Set();
+function toggleMinTrash(){ showMinTrash = !showMinTrash; render(); }
+function toggleFamTrash(ci){ if(openFamTrash.has(ci)) openFamTrash.delete(ci); else openFamTrash.add(ci); render(); }
+function esc(s){ return (s||'').replace(/"/g,'&quot;'); }
+
+function renderFamilyRow(ci, f, fi){
+  const d = daysSince(f.lastContact); const alert = d!==null && d>30;
+  const label = f.lastContact ? `${fmtDate(f.lastContact)} (${d} ${t('days')})` : t('never');
+  return `<div class="semaforo-row" style="${f.deleted?'opacity:.5;':''}">
+    <div class="semaforo-dot ${f.deleted?'':(alert || d===null ?'rojo':'verde')}"></div>
+    <div class="semaforo-info">
+      <input class="resp-input" style="width:100%;max-width:280px;font-weight:700;color:var(--deep-water);background:white;font-size:.85rem;"
+        value="${esc(f.family)}" ${f.deleted?'disabled':''} placeholder="${t('famPh')}" onchange="updateFamilyName(${ci},${fi},this.value)">
+      ${!f.deleted
+        ? `<div class="contact ${alert?'alert':''}">${t('lastContact')} ${label}${alert?' — '+t('alertDays'):''}</div>`
+        : `<div style="font-size:.68rem;color:var(--rojo);margin-top:2px;">${t('deletedTag')} · ${fmtDate(f.deletedAt)}</div>`}
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+      ${!f.deleted
+        ? `<button class="mark-btn" onclick="markFamilyVisited(${ci},${fi})">${t('markVisited')}</button><span class="row-del" onclick="deleteFamily(${ci},${fi})">✕</span>`
+        : `<button class="icon-btn" title="${t('restoreMinuta')}" onclick="restoreFamily(${ci},${fi})">↺</button>`}
+    </div>
+  </div>`;
+}
+
+function renderCompCard(c, i){
+  const asigs = c.asignaciones || [];
+  const activeFam = asigs.map((f,fi)=>({f,fi})).filter(({f})=>!f.deleted);
+  const deletedFam = asigs.map((f,fi)=>({f,fi})).filter(({f})=>f.deleted);
+  const famRows = activeFam.map(({f,fi})=>renderFamilyRow(i,f,fi)).join('');
+  const famTrashOpen = openFamTrash.has(i);
+  const deletedFamBlock = deletedFam.length ? `
+    <div style="margin-top:8px;">
+      <span class="link" onclick="toggleFamTrash(${i})">${t('viewRemovedFamilies')} (${deletedFam.length})</span>
+      ${famTrashOpen ? deletedFam.map(({f,fi})=>renderFamilyRow(i,f,fi)).join('') : ''}
+    </div>` : '';
+  const actionBtn = c.deleted
+    ? `<button class="icon-btn" title="${t('restoreMinuta')}" onclick="restoreComp(${i})">↺</button>`
+    : `<button class="icon-btn" title="${t('deleteMinuta')}" onclick="deleteComp(${i})" style="color:var(--rojo);">🗑️</button>`;
+  return `<div class="card" style="${c.deleted?'opacity:.55;':''}">
+    <div class="card-header-row">
+      <input class="title-input" value="${esc(c.names)}" ${c.deleted?'disabled':''} placeholder="${t('compPh')}" onchange="updateCompNames(${i}, this.value)">
+      ${actionBtn}
+    </div>
+    ${c.deleted ? `<div style="font-size:.7rem;color:var(--rojo);margin:-4px 0 8px;">${t('deletedTag')} · ${fmtDate(c.deletedAt)}</div>` : ''}
+    ${activeFam.length ? famRows : `<div class="empty" style="padding:6px 0;">${t('noFamAssigned')}</div>`}
+    ${!c.deleted ? `
+    <div class="add-row" style="margin-top:10px;">
+      <input id="famInput${i}" placeholder="${t('famPh')}" onkeydown="if(event.key==='Enter')addFamily(${i})">
+      <button onclick="addFamily(${i})">+</button>
+    </div>` : ''}
+    ${deletedFamBlock}
+  </div>`;
+}
+
+function renderMinistracion(){
+  const allEntries = state.ministracion.map((c,i)=>({c,i})).reverse();
+  const activeCards = allEntries.filter(({c})=>!c.deleted).map(({c,i})=>renderCompCard(c,i)).join('');
+  const trashCards = allEntries.filter(({c})=>c.deleted).map(({c,i})=>renderCompCard(c,i)).join('');
+  const deletedCount = state.ministracion.filter(c=>c.deleted).length;
+  const trashCard = showMinTrash ? `<div class="card">
+    <h2 style="font-size:.9rem;">🗑️ ${t('trash')}</h2>
+    ${trashCards || `<div class="empty">${t('noTrash')}</div>`}
+  </div>` : '';
+  return `<div class="card">
+    <div class="card-header-row">
+      <div><h2>${t('minTitle')}</h2><div class="card-sub">${t('minSub')}</div></div>
+      <button class="icon-btn" title="${t('trash')}" onclick="toggleMinTrash()" style="position:relative;${showMinTrash?'background:var(--linen);':''}">
+        🗑️${deletedCount>0 ? `<span style="position:absolute;top:-6px;right:-6px;background:var(--rojo);color:white;border-radius:10px;font-size:.6rem;font-weight:700;padding:1px 5px;line-height:1.3;">${deletedCount}</span>` : ''}
+      </button>
+    </div>
+    <div class="info-note"><b>LCR:</b> ${t('minLcrNote')}</div>
+    <div class="add-row">
+      <input id="compNames" placeholder="${t('compPh')}" onkeydown="if(event.key==='Enter')addComp()">
+      <button onclick="addComp()">+</button>
+    </div>
+  </div>
+  ${activeCards || `<div class="card"><div class="empty">${t('noComp')}</div></div>`}
+  ${trashCard}`;
+}
+function addComp(){
+  const n=document.getElementById('compNames');
+  if(n.value.trim()){
+    state.ministracion.push({
+      names:n.value.trim(), asignaciones:[],
+      createdAt:new Date().toISOString(), deleted:false, deletedAt:null
+    });
+    n.value=''; saveState(); render(); toast(t('compAdded'));
+  }
+}
+function updateCompNames(i, v){ state.ministracion[i].names = v.trim(); saveState(); }
+function deleteComp(i){
+  state.ministracion[i].deleted = true; state.ministracion[i].deletedAt = new Date().toISOString();
+  saveState(); render(); toast(t('movedToTrash'));
+}
+function restoreComp(i){
+  state.ministracion[i].deleted = false; state.ministracion[i].deletedAt = null;
+  saveState(); render(); toast(t('restored'));
+}
+function addFamily(ci){
+  const el = document.getElementById('famInput'+ci);
+  if(el.value.trim()){
+    if(!state.ministracion[ci].asignaciones) state.ministracion[ci].asignaciones=[];
+    state.ministracion[ci].asignaciones.push({
+      family: el.value.trim(), lastContact:null,
+      createdAt:new Date().toISOString(), deleted:false, deletedAt:null
+    });
+    el.value=''; saveState(); render(); toast(t('famAdded'));
+  }
+}
+function updateFamilyName(ci, fi, v){ state.ministracion[ci].asignaciones[fi].family = v.trim(); saveState(); }
+function markFamilyVisited(ci, fi){
+  state.ministracion[ci].asignaciones[fi].lastContact = new Date().toISOString();
+  saveState(); render(); toast(t('saved'));
+}
+function deleteFamily(ci, fi){
+  state.ministracion[ci].asignaciones[fi].deleted = true;
+  state.ministracion[ci].asignaciones[fi].deletedAt = new Date().toISOString();
+  saveState(); render(); toast(t('movedToTrash'));
+}
+function restoreFamily(ci, fi){
+  state.ministracion[ci].asignaciones[fi].deleted = false;
+  state.ministracion[ci].asignaciones[fi].deletedAt = null;
+  saveState(); render(); toast(t('restored'));
+}
+function getAllActiveFamilies(){
+  const out = [];
+  state.ministracion.filter(c=>!c.deleted).forEach(c=>{
+    (c.asignaciones||[]).filter(f=>!f.deleted).forEach(f=>{
+      out.push({ compNames:c.names, family:f.family, lastContact:f.lastContact });
+    });
+  });
+  return out;
+}
+
+/* ---- Entrevistas (Secretario Ejecutivo) ---- */
+let editingEntrevistaIndex = null;
+let openEntrevistaHistoryIndices = new Set();
+let showEntrevistasTrash = false;
+function toggleEntrevistaHistoryView(i){
+  if(openEntrevistaHistoryIndices.has(i)) openEntrevistaHistoryIndices.delete(i); else openEntrevistaHistoryIndices.add(i);
+  render();
+}
+function toggleEntrevistasTrash(){ showEntrevistasTrash = !showEntrevistasTrash; render(); }
+function cycleEstado(i){
+  if(state.entrevistas[i].deleted) return;
+  const order = ['pendiente','agendada','hecha'];
+  const cur = order.indexOf(state.entrevistas[i].estado);
+  state.entrevistas[i].estado = order[(cur+1)%order.length];
+  saveState(); render();
+}
+function renderEntrevistaRow(x, i){
+  if(editingEntrevistaIndex === i){
+    return `<div class="list-row">
+      <div class="field-row" style="margin-top:0;">
+        <div class="field"><input id="editEntNombre" value="${(x.nombre||'').replace(/"/g,'&quot;')}" placeholder="${t('nombrePh')}"></div>
+        <div class="field"><input id="editEntMotivo" value="${(x.motivo||'').replace(/"/g,'&quot;')}" placeholder="${t('motivoPh')}"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><input type="date" id="editEntFecha" value="${x.fecha||''}"></div>
+      </div>
+      <div class="share-row" style="margin-top:8px;">
+        <button class="share-btn" style="background:var(--living-teal);flex:0 0 auto;padding:8px 14px;font-size:.74rem;" onclick="saveEditEntrevista(${i})">${t('saveEdit')}</button>
+        <button class="share-btn" style="background:#9c8f6c;flex:0 0 auto;padding:8px 14px;font-size:.74rem;" onclick="cancelEditEntrevista()">${t('cancelEdit')}</button>
+      </div>
+    </div>`;
+  }
+  const changesN = (x.history||[]).length;
+  const changesOpen = openEntrevistaHistoryIndices.has(i);
+  const metaBits = [];
+  if(x.fecha) metaBits.push(fmtDateOnly(x.fecha));
+  if(x.createdAt) metaBits.push(`${t('createdOn')} ${fmtDate(x.createdAt)}`);
+  if(x.editedAt) metaBits.push(`${t('editedOn')} ${fmtDate(x.editedAt)}`);
+  if(x.deleted) metaBits.push(`<b style="color:var(--rojo);">${t('deletedOn')} ${fmtDate(x.deletedAt)}</b>`);
+  if(changesN>0) metaBits.push(`<span class="link" onclick="toggleEntrevistaHistoryView(${i})">${t('viewChanges')} (${changesN})</span>`);
+  const changesPanel = (changesOpen && changesN>0) ? `
+    <div style="margin-top:6px;">
+      ${x.history.slice().reverse().map(v=>`
+        <div style="border-top:1px dashed var(--line);padding:6px 0;font-size:.78rem;">
+          <div style="font-size:.65rem;color:#a89e7f;margin-bottom:2px;">${t('versionOf')} ${fmtDate(v.at)}</div>
+          <div style="color:#7a6f52;"><b>${v.nombre}</b>: ${v.motivo}</div>
+        </div>`).join('')}
+    </div>` : '';
+  const actionBtns = x.deleted
+    ? `<button class="icon-btn" title="${t('restoreMinuta')}" onclick="restoreEntrevista(${i})">↺</button>`
+    : `<div style="display:flex;gap:6px;">
+        <button class="icon-btn" title="${t('editMinuta')}" onclick="startEditEntrevista(${i})">✏️</button>
+        <button class="icon-btn" title="${t('deleteMinuta')}" onclick="deleteEntrevista(${i})" style="color:var(--rojo);">🗑️</button>
+      </div>`;
+  return `<div class="list-row" style="${x.deleted?'opacity:.55;':''}"><div class="row-top">
+    <div style="min-width:0;flex:1;">
+      <div class="who" style="${x.deleted?'text-decoration:line-through;':''}">${x.nombre}</div>
+      <div class="what">${x.motivo}</div>
+      ${metaBits.length ? `<div class="meta-line">${metaBits.join(' · ')}</div>` : ''}
+      ${changesPanel}
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+      ${x.deleted?'':`<span class="badge ${x.estado}" onclick="cycleEstado(${i})">${t('est'+x.estado.charAt(0).toUpperCase()+x.estado.slice(1))}</span>`}
+      ${actionBtns}
+    </div>
+  </div></div>`;
+}
+function renderEntrevistas(){
+  const allEntries = state.entrevistas.map((x,i)=>({x,i})).reverse();
+  const activeRows = allEntries.filter(({x})=>!x.deleted).map(({x,i})=>renderEntrevistaRow(x,i)).join('');
+  const trashRows = allEntries.filter(({x})=>x.deleted).map(({x,i})=>renderEntrevistaRow(x,i)).join('');
+  const deletedCount = state.entrevistas.filter(x=>x.deleted).length;
+  const trashCard = showEntrevistasTrash ? `<div class="card">
+    <h2 style="font-size:.9rem;">🗑️ ${t('trash')}</h2>${trashRows || `<div class="empty">${t('noTrash')}</div>`}
+  </div>` : '';
+  return `<div class="card">
+    <div class="card-header-row">
+      <div><h2>${t('entrevistasTitle')}</h2><div class="card-sub">${t('entrevistasSub')}</div></div>
+      <button class="icon-btn" title="${t('trash')}" onclick="toggleEntrevistasTrash()" style="position:relative;${showEntrevistasTrash?'background:var(--linen);':''}">
+        🗑️${deletedCount>0 ? `<span style="position:absolute;top:-6px;right:-6px;background:var(--rojo);color:white;border-radius:10px;font-size:.6rem;font-weight:700;padding:1px 5px;line-height:1.3;">${deletedCount}</span>` : ''}
+      </button>
+    </div>
+    ${activeRows || `<div class="empty">${t('noEntrevistas')}</div>`}
+    <div class="field-row">
+      <div class="field"><input id="entNombre" placeholder="${t('nombrePh')}"></div>
+      <div class="field"><input id="entMotivo" placeholder="${t('motivoPh')}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><input type="date" id="entFecha" title="${t('fechaPh')}"></div>
+    </div>
+    <button class="btn-full" onclick="addEntrevista()">${t('addEntrevista')}</button>
+  </div>
+  ${trashCard}`;
+}
+function addEntrevista(){
+  const n=document.getElementById('entNombre'), m=document.getElementById('entMotivo'), f=document.getElementById('entFecha');
+  if(n.value.trim() && m.value.trim()){
+    state.entrevistas.push({
+      nombre:n.value.trim(), motivo:m.value.trim(), fecha:f.value||'', estado:'pendiente',
+      createdAt:new Date().toISOString(), history:[], editedAt:null, deleted:false, deletedAt:null
+    });
+    n.value=''; m.value=''; f.value=''; saveState(); render(); toast(t('entrevistaAdded'));
+  }
+}
+function startEditEntrevista(i){ editingEntrevistaIndex=i; render(); }
+function cancelEditEntrevista(){ editingEntrevistaIndex=null; render(); }
+function saveEditEntrevista(i){
+  const nombre = document.getElementById('editEntNombre').value.trim();
+  const motivo = document.getElementById('editEntMotivo').value.trim();
+  const fecha = document.getElementById('editEntFecha').value;
+  if(!nombre || !motivo) return;
+  const x = state.entrevistas[i];
+  if(!x.history) x.history=[];
+  x.history.push({ nombre:x.nombre, motivo:x.motivo, at: x.editedAt || x.createdAt });
+  x.nombre=nombre; x.motivo=motivo; x.fecha=fecha||''; x.editedAt=new Date().toISOString();
+  editingEntrevistaIndex=null; saveState(); render(); toast(t('saved'));
+}
+function deleteEntrevista(i){
+  state.entrevistas[i].deleted=true; state.entrevistas[i].deletedAt=new Date().toISOString();
+  saveState(); render(); toast(t('movedToTrash'));
+}
+function restoreEntrevista(i){
+  state.entrevistas[i].deleted=false; state.entrevistas[i].deletedAt=null;
+  saveState(); render(); toast(t('restored'));
+}
+
+/* ---- Consejo de barrio (Secretario de Obispado) ---- */
+function renderConsejo(){
+  const cur = state.consejo.current;
+  const rows = cur.items.map((it,i)=>`
+    <div class="check-item ${it.done?'checked':''}">
+      <input type="checkbox" ${it.done?'checked':''} onchange="toggleConsejoItem(${i})">
+      <span>${it.text}</span>
+      <div class="row-right"><span class="row-del" onclick="removeConsejoItem(${i})">✕</span></div>
+    </div>`).join('');
+
+  const mainCard = `<div class="card">
+    <h2>${t('consejoTitle')}</h2><div class="card-sub">${t('consejoSub')}</div>
+    <div class="field-row">
+      <div class="field"><label>${t('meetingDate')}</label><input type="date" value="${cur.date||''}" onchange="updateConsejoDate(this.value)"></div>
+      <div class="field"><label>${t('meetingTime')}</label><input type="time" value="${cur.time||''}" onchange="updateConsejoTime(this.value)"></div>
+    </div>
+    <div style="margin-top:14px;">${rows || `<div class="empty">—</div>`}</div>
+    <div class="add-row">
+      <input id="newConsejoItem" placeholder="${t('consejoAddItem')}" onkeydown="if(event.key==='Enter')addConsejoItem()">
+      <button onclick="addConsejoItem()">+</button>
+    </div>
+    <textarea class="minuta" style="margin-top:12px;min-height:80px;" id="consejoNotas" placeholder="${t('consejoNotasPh')}" onchange="updateConsejoNotas(this.value)">${(cur.notas||'').replace(/</g,'&lt;')}</textarea>
+    <button class="btn-full" onclick="archiveConsejo()">${t('archiveConsejo')}</button>
+  </div>`;
+
+  const histEntries = state.consejo.history.map((h,idx)=>({h,idx})).reverse();
+  const histRows = histEntries.map(({h,idx})=>{
+    const presentCount = h.items.filter(it=>it.done).length;
+    return `<div class="minuta-entry">
+      <div class="stamp">${fmtDateOnly(h.date)}</div>
+      <div class="txt" style="flex:1;">
+        <div style="font-weight:700;color:var(--deep-water);">${fmtDateOnly(h.date)}${h.time?' · '+h.time:''}</div>
+        <div style="font-size:.78rem;color:#7a6f52;margin:2px 0 6px;">${presentCount}/${h.items.length} ${t('presentesOf')}</div>
+        ${h.notas ? `<div style="font-size:.82rem;color:var(--ink);white-space:pre-wrap;">${h.notas.replace(/</g,'&lt;')}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+  const historyCard = `<div class="card"><h2 style="font-size:.9rem;">${t('consejoHistoryTitle')}</h2>
+    ${histRows || `<div class="empty">${t('noConsejoHistory')}</div>`}</div>`;
+
+  return mainCard + historyCard;
+}
+function toggleConsejoItem(i){ state.consejo.current.items[i].done=!state.consejo.current.items[i].done; saveState(); render(); }
+function removeConsejoItem(i){ state.consejo.current.items.splice(i,1); saveState(); render(); }
+function addConsejoItem(){
+  const el=document.getElementById('newConsejoItem');
+  if(el.value.trim()){ state.consejo.current.items.push({text:el.value.trim(),done:false}); saveState(); render(); }
+}
+function updateConsejoDate(v){ state.consejo.current.date=v; saveState(); }
+function updateConsejoTime(v){ state.consejo.current.time=v; saveState(); }
+function updateConsejoNotas(v){ state.consejo.current.notas=v; saveState(); }
+function archiveConsejo(){
+  state.consejo.history.push({
+    date: state.consejo.current.date, time: state.consejo.current.time,
+    items: state.consejo.current.items.map(it=>({text:it.text, done:it.done})),
+    notas: state.consejo.current.notas, archivedAt: new Date().toISOString()
+  });
+  state.consejo.current = {
+    date: todayDateStr(), time: nowTimeStr(),
+    items: state.consejo.current.items.map(it=>({text:it.text, done:false})), notas:''
+  };
+  saveState(); render(); toast(t('consejoArchived'));
+}
+
+/* ---- Clases y maestros (Escuela Dominical) ---- */
+let editingClaseIndex = null;
+let openClaseHistoryIndices = new Set();
+let showClasesTrash = false;
+function toggleClaseHistoryView(i){
+  if(openClaseHistoryIndices.has(i)) openClaseHistoryIndices.delete(i); else openClaseHistoryIndices.add(i);
+  render();
+}
+function toggleClasesTrash(){ showClasesTrash = !showClasesTrash; render(); }
+function renderClaseRow(c, i){
+  if(editingClaseIndex === i){
+    return `<div class="list-row">
+      <div class="field-row" style="margin-top:0;">
+        <div class="field"><input id="editClaseNombre" value="${(c.clase||'').replace(/"/g,'&quot;')}" placeholder="${t('clasePh')}"></div>
+        <div class="field"><input id="editClaseMaestro" value="${(c.maestro||'').replace(/"/g,'&quot;')}" placeholder="${t('maestroPh')}"></div>
+      </div>
+      <div class="share-row" style="margin-top:8px;">
+        <button class="share-btn" style="background:var(--living-teal);flex:0 0 auto;padding:8px 14px;font-size:.74rem;" onclick="saveEditClase(${i})">${t('saveEdit')}</button>
+        <button class="share-btn" style="background:#9c8f6c;flex:0 0 auto;padding:8px 14px;font-size:.74rem;" onclick="cancelEditClase()">${t('cancelEdit')}</button>
+      </div>
+    </div>`;
+  }
+  const changesN = (c.history||[]).length;
+  const changesOpen = openClaseHistoryIndices.has(i);
+  const metaBits = [];
+  if(c.createdAt) metaBits.push(`${t('createdOn')} ${fmtDate(c.createdAt)}`);
+  if(c.editedAt) metaBits.push(`${t('editedOn')} ${fmtDate(c.editedAt)}`);
+  if(c.deleted) metaBits.push(`<b style="color:var(--rojo);">${t('deletedOn')} ${fmtDate(c.deletedAt)}</b>`);
+  if(changesN>0) metaBits.push(`<span class="link" onclick="toggleClaseHistoryView(${i})">${t('viewChanges')} (${changesN})</span>`);
+  const changesPanel = (changesOpen && changesN>0) ? `
+    <div style="margin-top:6px;">
+      ${c.history.slice().reverse().map(v=>`
+        <div style="border-top:1px dashed var(--line);padding:6px 0;font-size:.78rem;">
+          <div style="font-size:.65rem;color:#a89e7f;margin-bottom:2px;">${t('versionOf')} ${fmtDate(v.at)}</div>
+          <div style="color:#7a6f52;"><b>${v.clase}</b>: ${v.maestro || t('sinMaestro')}</div>
+        </div>`).join('')}
+    </div>` : '';
+  const actionBtns = c.deleted
+    ? `<button class="icon-btn" title="${t('restoreMinuta')}" onclick="restoreClase(${i})">↺</button>`
+    : `<div style="display:flex;gap:6px;">
+        <button class="icon-btn" title="${t('editMinuta')}" onclick="startEditClase(${i})">✏️</button>
+        <button class="icon-btn" title="${t('deleteMinuta')}" onclick="deleteClase(${i})" style="color:var(--rojo);">🗑️</button>
+      </div>`;
+  const hasMaestro = !!(c.maestro && c.maestro.trim());
+  return `<div class="list-row" style="${c.deleted?'opacity:.55;':''}"><div class="row-top">
+    <div style="min-width:0;flex:1;">
+      <div class="who" style="${c.deleted?'text-decoration:line-through;':''}">${c.clase}</div>
+      <div class="what">${c.maestro || t('sinMaestro')}</div>
+      ${metaBits.length ? `<div class="meta-line">${metaBits.join(' · ')}</div>` : ''}
+      ${changesPanel}
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+      ${c.deleted?'':`<span class="badge ${hasMaestro?'done':'pending'}">${hasMaestro?t('asignado'):t('sinMaestro')}</span>`}
+      ${actionBtns}
+    </div>
+  </div></div>`;
+}
+function renderClases(){
+  const allEntries = state.clases.map((c,i)=>({c,i})).reverse();
+  const activeRows = allEntries.filter(({c})=>!c.deleted).map(({c,i})=>renderClaseRow(c,i)).join('');
+  const trashRows = allEntries.filter(({c})=>c.deleted).map(({c,i})=>renderClaseRow(c,i)).join('');
+  const deletedCount = state.clases.filter(c=>c.deleted).length;
+  const trashCard = showClasesTrash ? `<div class="card">
+    <h2 style="font-size:.9rem;">🗑️ ${t('trash')}</h2>${trashRows || `<div class="empty">${t('noTrash')}</div>`}
+  </div>` : '';
+  return `<div class="card">
+    <div class="card-header-row">
+      <div><h2>${t('clasesTitle')}</h2><div class="card-sub">${t('clasesSub')}</div></div>
+      <button class="icon-btn" title="${t('trash')}" onclick="toggleClasesTrash()" style="position:relative;${showClasesTrash?'background:var(--linen);':''}">
+        🗑️${deletedCount>0 ? `<span style="position:absolute;top:-6px;right:-6px;background:var(--rojo);color:white;border-radius:10px;font-size:.6rem;font-weight:700;padding:1px 5px;line-height:1.3;">${deletedCount}</span>` : ''}
+      </button>
+    </div>
+    ${activeRows || `<div class="empty">${t('noClases')}</div>`}
+    <div class="field-row">
+      <div class="field"><input id="claseNombre" placeholder="${t('clasePh')}"></div>
+      <div class="field"><input id="claseMaestro" placeholder="${t('maestroPh')}"></div>
+    </div>
+    <button class="btn-full" onclick="addClase()">${t('addClase')}</button>
+  </div>
+  ${trashCard}`;
+}
+function addClase(){
+  const cl=document.getElementById('claseNombre'), m=document.getElementById('claseMaestro');
+  if(cl.value.trim()){
+    state.clases.push({
+      clase:cl.value.trim(), maestro:m.value.trim(),
+      createdAt:new Date().toISOString(), history:[], editedAt:null, deleted:false, deletedAt:null
+    });
+    cl.value=''; m.value=''; saveState(); render(); toast(t('claseAdded'));
+  }
+}
+function startEditClase(i){ editingClaseIndex=i; render(); }
+function cancelEditClase(){ editingClaseIndex=null; render(); }
+function saveEditClase(i){
+  const clase = document.getElementById('editClaseNombre').value.trim();
+  const maestro = document.getElementById('editClaseMaestro').value.trim();
+  if(!clase) return;
+  const c = state.clases[i];
+  if(!c.history) c.history=[];
+  c.history.push({ clase:c.clase, maestro:c.maestro, at: c.editedAt || c.createdAt });
+  c.clase=clase; c.maestro=maestro; c.editedAt=new Date().toISOString();
+  editingClaseIndex=null; saveState(); render(); toast(t('saved'));
+}
+function deleteClase(i){
+  state.clases[i].deleted=true; state.clases[i].deletedAt=new Date().toISOString();
+  saveState(); render(); toast(t('movedToTrash'));
+}
+function restoreClase(i){
+  state.clases[i].deleted=false; state.clases[i].deletedAt=null;
+  saveState(); render(); toast(t('restored'));
+}
+
+/* ---- Llamamientos en consideración ---- */
+let editingLlamamientoIndex = null;
+let openLlamamientoHistoryIndices = new Set();
+let showLlamamientosTrash = false;
+function toggleLlamamientoHistoryView(i){
+  if(openLlamamientoHistoryIndices.has(i)) openLlamamientoHistoryIndices.delete(i); else openLlamamientoHistoryIndices.add(i);
+  render();
+}
+function toggleLlamamientosTrash(){ showLlamamientosTrash = !showLlamamientosTrash; render(); }
+function cycleLlamamientoEstado(i){
+  if(state.llamamientos[i].deleted) return;
+  const order = ['orando','propuesto','extendido'];
+  const cur = order.indexOf(state.llamamientos[i].estado);
+  state.llamamientos[i].estado = order[(cur+1)%order.length];
+  saveState(); render();
+}
+function renderLlamamientoRow(x, i){
+  if(editingLlamamientoIndex === i){
+    return `<div class="list-row">
+      <div class="field-row" style="margin-top:0;">
+        <div class="field"><input id="editLlPersona" value="${(x.persona||'').replace(/"/g,'&quot;')}" placeholder="${t('personaPh')}"></div>
+        <div class="field"><input id="editLlLlamamiento" value="${(x.llamamiento||'').replace(/"/g,'&quot;')}" placeholder="${t('llamamientoPh')}"></div>
+      </div>
+      <div class="share-row" style="margin-top:8px;">
+        <button class="share-btn" style="background:var(--living-teal);flex:0 0 auto;padding:8px 14px;font-size:.74rem;" onclick="saveEditLlamamiento(${i})">${t('saveEdit')}</button>
+        <button class="share-btn" style="background:#9c8f6c;flex:0 0 auto;padding:8px 14px;font-size:.74rem;" onclick="cancelEditLlamamiento()">${t('cancelEdit')}</button>
+      </div>
+    </div>`;
+  }
+  const changesN = (x.history||[]).length;
+  const changesOpen = openLlamamientoHistoryIndices.has(i);
+  const metaBits = [];
+  if(x.createdAt) metaBits.push(`${t('createdOn')} ${fmtDate(x.createdAt)}`);
+  if(x.editedAt) metaBits.push(`${t('editedOn')} ${fmtDate(x.editedAt)}`);
+  if(x.deleted) metaBits.push(`<b style="color:var(--rojo);">${t('deletedOn')} ${fmtDate(x.deletedAt)}</b>`);
+  if(changesN>0) metaBits.push(`<span class="link" onclick="toggleLlamamientoHistoryView(${i})">${t('viewChanges')} (${changesN})</span>`);
+  const changesPanel = (changesOpen && changesN>0) ? `
+    <div style="margin-top:6px;">
+      ${x.history.slice().reverse().map(v=>`
+        <div style="border-top:1px dashed var(--line);padding:6px 0;font-size:.78rem;">
+          <div style="font-size:.65rem;color:#a89e7f;margin-bottom:2px;">${t('versionOf')} ${fmtDate(v.at)}</div>
+          <div style="color:#7a6f52;"><b>${v.persona}</b>: ${v.llamamiento}</div>
+        </div>`).join('')}
+    </div>` : '';
+  const actionBtns = x.deleted
+    ? `<button class="icon-btn" title="${t('restoreMinuta')}" onclick="restoreLlamamiento(${i})">↺</button>`
+    : `<div style="display:flex;gap:6px;">
+        <button class="icon-btn" title="${t('editMinuta')}" onclick="startEditLlamamiento(${i})">✏️</button>
+        <button class="icon-btn" title="${t('deleteMinuta')}" onclick="deleteLlamamiento(${i})" style="color:var(--rojo);">🗑️</button>
+      </div>`;
+  return `<div class="list-row" style="${x.deleted?'opacity:.55;':''}"><div class="row-top">
+    <div style="min-width:0;flex:1;">
+      <div class="who" style="${x.deleted?'text-decoration:line-through;':''}">${x.persona}</div>
+      <div class="what">${x.llamamiento}</div>
+      ${metaBits.length ? `<div class="meta-line">${metaBits.join(' · ')}</div>` : ''}
+      ${changesPanel}
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+      ${x.deleted?'':`<span class="badge ${x.estado}" onclick="cycleLlamamientoEstado(${i})">${t('est'+x.estado.charAt(0).toUpperCase()+x.estado.slice(1))}</span>`}
+      ${actionBtns}
+    </div>
+  </div></div>`;
+}
+function renderLlamamientos(){
+  const allEntries = state.llamamientos.map((x,i)=>({x,i})).reverse();
+  const activeRows = allEntries.filter(({x})=>!x.deleted).map(({x,i})=>renderLlamamientoRow(x,i)).join('');
+  const trashRows = allEntries.filter(({x})=>x.deleted).map(({x,i})=>renderLlamamientoRow(x,i)).join('');
+  const deletedCount = state.llamamientos.filter(x=>x.deleted).length;
+  const trashCard = showLlamamientosTrash ? `<div class="card">
+    <h2 style="font-size:.9rem;">🗑️ ${t('trash')}</h2>${trashRows || `<div class="empty">${t('noTrash')}</div>`}
+  </div>` : '';
+  return `<div class="card">
+    <div class="card-header-row">
+      <div><h2>${t('llamamientosTitle')}</h2><div class="card-sub">${t('llamamientosSub')}</div></div>
+      <button class="icon-btn" title="${t('trash')}" onclick="toggleLlamamientosTrash()" style="position:relative;${showLlamamientosTrash?'background:var(--linen);':''}">
+        🗑️${deletedCount>0 ? `<span style="position:absolute;top:-6px;right:-6px;background:var(--rojo);color:white;border-radius:10px;font-size:.6rem;font-weight:700;padding:1px 5px;line-height:1.3;">${deletedCount}</span>` : ''}
+      </button>
+    </div>
+    <div class="privacy-note"><b>${state.lang==='es'?'Privacidad:':'Privacy:'}</b> ${t('llamamientosWarning')}</div>
+    ${activeRows || `<div class="empty">${t('noLlamamientos')}</div>`}
+    <div class="field-row">
+      <div class="field"><input id="llPersona" placeholder="${t('personaPh')}"></div>
+      <div class="field"><input id="llLlamamiento" placeholder="${t('llamamientoPh')}"></div>
+    </div>
+    <button class="btn-full" onclick="addLlamamiento()">${t('addLlamamiento')}</button>
+  </div>
+  ${trashCard}`;
+}
+function addLlamamiento(){
+  const p=document.getElementById('llPersona'), l=document.getElementById('llLlamamiento');
+  if(p.value.trim() && l.value.trim()){
+    state.llamamientos.push({
+      persona:p.value.trim(), llamamiento:l.value.trim(), estado:'orando',
+      createdAt:new Date().toISOString(), history:[], editedAt:null, deleted:false, deletedAt:null
+    });
+    p.value=''; l.value=''; saveState(); render(); toast(t('llamamientoAdded'));
+  }
+}
+function startEditLlamamiento(i){ editingLlamamientoIndex=i; render(); }
+function cancelEditLlamamiento(){ editingLlamamientoIndex=null; render(); }
+function saveEditLlamamiento(i){
+  const persona = document.getElementById('editLlPersona').value.trim();
+  const llamamiento = document.getElementById('editLlLlamamiento').value.trim();
+  if(!persona || !llamamiento) return;
+  const x = state.llamamientos[i];
+  if(!x.history) x.history=[];
+  x.history.push({ persona:x.persona, llamamiento:x.llamamiento, at: x.editedAt || x.createdAt });
+  x.persona=persona; x.llamamiento=llamamiento; x.editedAt=new Date().toISOString();
+  editingLlamamientoIndex=null; saveState(); render(); toast(t('saved'));
+}
+function deleteLlamamiento(i){
+  state.llamamientos[i].deleted=true; state.llamamientos[i].deletedAt=new Date().toISOString();
+  saveState(); render(); toast(t('movedToTrash'));
+}
+function restoreLlamamiento(i){
+  state.llamamientos[i].deleted=false; state.llamamientos[i].deletedAt=null;
+  saveState(); render(); toast(t('restored'));
+}
+
+/* ---- Rotaciones (asignaciones recurrentes) ---- */
+let editingRotacionIndex = null;
+let openRotacionHistoryIndices = new Set();
+let openTurnHistoryIndices = new Set();
+let showRotacionesTrash = false;
+function toggleRotacionHistoryView(i){
+  if(openRotacionHistoryIndices.has(i)) openRotacionHistoryIndices.delete(i); else openRotacionHistoryIndices.add(i);
+  render();
+}
+function toggleTurnHistoryView(i){
+  if(openTurnHistoryIndices.has(i)) openTurnHistoryIndices.delete(i); else openTurnHistoryIndices.add(i);
+  render();
+}
+function toggleRotacionesTrash(){ showRotacionesTrash = !showRotacionesTrash; render(); }
+function avanzarTurno(i){
+  const r = state.rotaciones[i];
+  if(r.deleted || !r.personas.length) return;
+  if(!r.turnHistory) r.turnHistory=[];
+  r.turnHistory.push({ persona: r.personas[r.turnoActual], fecha: new Date().toISOString() });
+  r.turnoActual = (r.turnoActual+1) % r.personas.length;
+  saveState(); render(); toast(t('turnAdvanced'));
+}
+function renderRotacionRow(r, i){
+  if(editingRotacionIndex === i){
+    return `<div class="list-row">
+      <div class="field-row" style="margin-top:0;">
+        <div class="field"><input id="editRotTarea" value="${(r.tarea||'').replace(/"/g,'&quot;')}" placeholder="${t('tareaRotPh')}"></div>
+        <div class="field"><input id="editRotPersonas" value="${(r.personas||[]).join(', ').replace(/"/g,'&quot;')}" placeholder="${t('personasRotPh')}"></div>
+      </div>
+      <div class="share-row" style="margin-top:8px;">
+        <button class="share-btn" style="background:var(--living-teal);flex:0 0 auto;padding:8px 14px;font-size:.74rem;" onclick="saveEditRotacion(${i})">${t('saveEdit')}</button>
+        <button class="share-btn" style="background:#9c8f6c;flex:0 0 auto;padding:8px 14px;font-size:.74rem;" onclick="cancelEditRotacion()">${t('cancelEdit')}</button>
+      </div>
+    </div>`;
+  }
+  const changesN = (r.history||[]).length;
+  const changesOpen = openRotacionHistoryIndices.has(i);
+  const turnN = (r.turnHistory||[]).length;
+  const turnOpen = openTurnHistoryIndices.has(i);
+  const metaBits = [];
+  if(r.createdAt) metaBits.push(`${t('createdOn')} ${fmtDate(r.createdAt)}`);
+  if(r.editedAt) metaBits.push(`${t('editedOn')} ${fmtDate(r.editedAt)}`);
+  if(r.deleted) metaBits.push(`<b style="color:var(--rojo);">${t('deletedOn')} ${fmtDate(r.deletedAt)}</b>`);
+  if(changesN>0) metaBits.push(`<span class="link" onclick="toggleRotacionHistoryView(${i})">${t('viewChanges')} (${changesN})</span>`);
+  if(!r.deleted) metaBits.push(`<span class="link" onclick="toggleTurnHistoryView(${i})">${t('viewTurnHistory')} (${turnN})</span>`);
+  const changesPanel = (changesOpen && changesN>0) ? `
+    <div style="margin-top:6px;">
+      ${r.history.slice().reverse().map(v=>`
+        <div style="border-top:1px dashed var(--line);padding:6px 0;font-size:.78rem;">
+          <div style="font-size:.65rem;color:#a89e7f;margin-bottom:2px;">${t('versionOf')} ${fmtDate(v.at)}</div>
+          <div style="color:#7a6f52;"><b>${v.tarea}</b>: ${(v.personas||[]).join(', ')}</div>
+        </div>`).join('')}
+    </div>` : '';
+  const turnPanel = (turnOpen) ? `
+    <div style="margin-top:6px;">
+      ${turnN>0 ? r.turnHistory.slice().reverse().map(v=>`
+        <div style="border-top:1px dashed var(--line);padding:6px 0;font-size:.78rem;color:#7a6f52;">
+          ${fmtDate(v.fecha)} — <b>${v.persona}</b>
+        </div>`).join('') : `<div style="font-size:.76rem;color:#a89e7f;font-style:italic;padding:6px 0;">${t('noTurnHistory')}</div>`}
+    </div>` : '';
+  const actionBtns = r.deleted
+    ? `<button class="icon-btn" title="${t('restoreMinuta')}" onclick="restoreRotacion(${i})">↺</button>`
+    : `<div style="display:flex;gap:6px;">
+        <button class="icon-btn" title="${t('editMinuta')}" onclick="startEditRotacion(${i})">✏️</button>
+        <button class="icon-btn" title="${t('deleteMinuta')}" onclick="deleteRotacion(${i})" style="color:var(--rojo);">🗑️</button>
+      </div>`;
+  const actual = r.personas && r.personas.length ? r.personas[r.turnoActual] : '—';
+  return `<div class="list-row" style="${r.deleted?'opacity:.55;':''}"><div class="row-top">
+    <div style="min-width:0;flex:1;">
+      <div class="who" style="${r.deleted?'text-decoration:line-through;':''}">${r.tarea}</div>
+      <div class="what">${t('turnoActualLabel')} <b>${actual}</b></div>
+      <div class="what" style="color:#a89e7f;font-size:.76rem;">${t('ordenLabel')} ${(r.personas||[]).join(', ')}</div>
+      ${metaBits.length ? `<div class="meta-line">${metaBits.join(' · ')}</div>` : ''}
+      ${changesPanel}${turnPanel}
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+      ${r.deleted?'':`<button class="mark-btn" onclick="avanzarTurno(${i})">↻ ${t('avanzarTurno')}</button>`}
+      ${actionBtns}
+    </div>
+  </div></div>`;
+}
+function renderRotaciones(){
+  const allEntries = state.rotaciones.map((r,i)=>({r,i})).reverse();
+  const activeRows = allEntries.filter(({r})=>!r.deleted).map(({r,i})=>renderRotacionRow(r,i)).join('');
+  const trashRows = allEntries.filter(({r})=>r.deleted).map(({r,i})=>renderRotacionRow(r,i)).join('');
+  const deletedCount = state.rotaciones.filter(r=>r.deleted).length;
+  const trashCard = showRotacionesTrash ? `<div class="card">
+    <h2 style="font-size:.9rem;">🗑️ ${t('trash')}</h2>${trashRows || `<div class="empty">${t('noTrash')}</div>`}
+  </div>` : '';
+  return `<div class="card">
+    <div class="card-header-row">
+      <div><h2>${t('rotacionesTitle')}</h2><div class="card-sub">${t('rotacionesSub')}</div></div>
+      <button class="icon-btn" title="${t('trash')}" onclick="toggleRotacionesTrash()" style="position:relative;${showRotacionesTrash?'background:var(--linen);':''}">
+        🗑️${deletedCount>0 ? `<span style="position:absolute;top:-6px;right:-6px;background:var(--rojo);color:white;border-radius:10px;font-size:.6rem;font-weight:700;padding:1px 5px;line-height:1.3;">${deletedCount}</span>` : ''}
+      </button>
+    </div>
+    ${activeRows || `<div class="empty">${t('noRotaciones')}</div>`}
+    <div class="field-row">
+      <div class="field"><input id="rotTarea" placeholder="${t('tareaRotPh')}"></div>
+      <div class="field"><input id="rotPersonas" placeholder="${t('personasRotPh')}"></div>
+    </div>
+    <button class="btn-full" onclick="addRotacion()">${t('addRotacion')}</button>
+  </div>
+  ${trashCard}`;
+}
+function addRotacion(){
+  const tEl=document.getElementById('rotTarea'), pEl=document.getElementById('rotPersonas');
+  const personas = pEl.value.split(',').map(s=>s.trim()).filter(Boolean);
+  if(tEl.value.trim() && personas.length){
+    state.rotaciones.push({
+      tarea:tEl.value.trim(), personas, turnoActual:0, turnHistory:[],
+      createdAt:new Date().toISOString(), history:[], editedAt:null, deleted:false, deletedAt:null
+    });
+    tEl.value=''; pEl.value=''; saveState(); render(); toast(t('rotacionAdded'));
+  }
+}
+function startEditRotacion(i){ editingRotacionIndex=i; render(); }
+function cancelEditRotacion(){ editingRotacionIndex=null; render(); }
+function saveEditRotacion(i){
+  const tarea = document.getElementById('editRotTarea').value.trim();
+  const personas = document.getElementById('editRotPersonas').value.split(',').map(s=>s.trim()).filter(Boolean);
+  if(!tarea || !personas.length) return;
+  const r = state.rotaciones[i];
+  if(!r.history) r.history=[];
+  r.history.push({ tarea:r.tarea, personas:r.personas, at: r.editedAt || r.createdAt });
+  r.tarea=tarea; r.personas=personas;
+  if(r.turnoActual >= personas.length) r.turnoActual = 0;
+  r.editedAt=new Date().toISOString();
+  editingRotacionIndex=null; saveState(); render(); toast(t('saved'));
+}
+function deleteRotacion(i){
+  state.rotaciones[i].deleted=true; state.rotaciones[i].deletedAt=new Date().toISOString();
+  saveState(); render(); toast(t('movedToTrash'));
+}
+function restoreRotacion(i){
+  state.rotaciones[i].deleted=false; state.rotaciones[i].deletedAt=null;
+  saveState(); render(); toast(t('restored'));
+}
+
+/* ---- Hoy (dashboard) ---- */
+const DAY_NAMES = {
+  es:['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+  en:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+};
+function statCard(num, label, cls, tab){
+  return `<div class="stat-card ${cls}" onclick="setTab('${tab}')">
+    <div class="num">${num}</div><div class="label">${label}</div>
+  </div>`;
+}
+function feedItem(icon, textHtml, subText, tab){
+  return `<div class="feed-item" onclick="setTab('${tab}')">
+    <div class="feed-icon">${icon}</div>
+    <div class="feed-text">${textHtml}${subText?`<div class="feed-sub">${subText}</div>`:''}</div>
+  </div>`;
+}
+function renderHoy(){
+  if(state.roles.length===0){
+    return `<div class="dash-hero"><div class="date">—</div><h2>${t('hoyTitle')}</h2><div class="sub">${t('hoyNoRole')}</div></div>`;
+  }
+  const now = new Date();
+  const dayName = DAY_NAMES[state.lang][now.getDay()];
+  const dateLabel = now.toLocaleDateString(state.lang==='es'?'es-ES':'en-US', {day:'numeric', month:'long'});
+
+  const pendingTasks = state.tareas.filter(x=>!x.deleted && !x.done);
+  const attnMin = state.roles.includes('cuorum_sds') ? getAllActiveFamilies().filter(f=>{ const d=daysSince(f.lastContact); return d===null||d>30; }) : [];
+  const activeEnt = state.roles.includes('ejecutivo') ? state.entrevistas.filter(x=>!x.deleted && x.estado!=='hecha') : [];
+  const clasesSinMaestro = state.roles.includes('ed') ? state.clases.filter(c=>!c.deleted && !(c.maestro && c.maestro.trim())) : [];
+  const activeLlam = state.llamamientos.filter(x=>!x.deleted);
+  const activeRot = state.rotaciones.filter(r=>!r.deleted);
+  const nowM = new Date();
+  const minutasMonth = state.minutas.filter(m=>!m.deleted && new Date(m.date).getMonth()===nowM.getMonth() && new Date(m.date).getFullYear()===nowM.getFullYear()).length;
+
+  const totalUrgent = pendingTasks.length + attnMin.length + activeEnt.length + clasesSinMaestro.length;
+
+  const hero = `<div class="dash-hero">
+    <div class="date">${dayName}, ${dateLabel}</div>
+    <h2>${t('hoyTitle')}</h2>
+    <div class="sub">${totalUrgent>0
+      ? (state.lang==='es' ? `${totalUrgent} cosas requieren tu atención` : `${totalUrgent} things need your attention`)
+      : (state.lang==='es' ? 'Todo al día 🎉' : 'All caught up 🎉')}</div>
+  </div>`;
+
+  const statCards = [];
+  statCards.push(statCard(pendingTasks.length, t('statAsign'), pendingTasks.length>0?'warn':'ok', 'tareas'));
+  if(state.roles.includes('cuorum_sds')) statCards.push(statCard(attnMin.length, t('statAlert'), attnMin.length>0?'warn':'ok', 'ministracion'));
+  if(state.roles.includes('ejecutivo')) statCards.push(statCard(activeEnt.length, t('tabEntrevistas'), activeEnt.length>0?'warn':'ok', 'entrevistas'));
+  if(state.roles.includes('ed')) statCards.push(statCard(clasesSinMaestro.length, t('sinMaestro'), clasesSinMaestro.length>0?'warn':'ok', 'clases'));
+  statCards.push(statCard(activeLlam.length, t('tabLlamamientos'), '', 'llamamientos'));
+  statCards.push(statCard(minutasMonth, t('statMin'), '', 'minutas'));
+  const statGrid = `<div class="stat-grid">${statCards.join('')}</div>`;
+
+  const sections = [];
+  if(pendingTasks.length) sections.push({title:t('tareasTitle'), items:pendingTasks.slice(0,5).map(x=>feedItem('📌', `<b>${x.who}</b>: ${x.what}`, '', 'tareas'))});
+  if(attnMin.length) sections.push({title:t('minTitle'), items:attnMin.slice(0,5).map(f=>feedItem('🧭', `<b>${f.compNames}</b> → ${f.family}`, '', 'ministracion'))});
+  if(activeEnt.length) sections.push({title:t('tabEntrevistas'), items:activeEnt.slice(0,5).map(x=>feedItem('🗓️', `<b>${x.nombre}</b> — ${x.motivo}`, x.fecha?fmtDateOnly(x.fecha):'', 'entrevistas'))});
+  if(clasesSinMaestro.length) sections.push({title:t('tabClases'), items:clasesSinMaestro.slice(0,5).map(c=>feedItem('📚', `<b>${c.clase}</b> — ${t('sinMaestro')}`, '', 'clases'))});
+
+  let feedCard;
+  if(sections.length){
+    feedCard = `<div class="card">
+      ${sections.map(s=>`<div class="feed-section-title">${s.title}</div>${s.items.join('')}`).join('')}
+    </div>`;
+  } else {
+    feedCard = `<div class="card"><div class="all-clear">
+      <div class="big-icon">✅</div>
+      <div class="msg">${state.lang==='es'?'Todo al día':'All caught up'}</div>
+      <div class="sub">${state.lang==='es'?'No hay nada urgente pendiente ahora mismo.':'Nothing urgent pending right now.'}</div>
+    </div></div>`;
+  }
+
+  const doneItems = state.agenda.filter(it=>it.done).length;
+  const totalItems = state.agenda.length;
+  const pct = totalItems ? Math.round((doneItems/totalItems)*100) : 0;
+  const agendaCard = `<div class="card">
+    <div class="card-header-row">
+      <div><h2 style="font-size:.95rem;">${t('agendaTitle')}</h2>
+      <div class="card-sub" style="margin-bottom:0;">${state.agendaMeta.date?fmtDateOnly(state.agendaMeta.date):''}${state.agendaMeta.time?' · '+state.agendaMeta.time:''}</div></div>
+      <button class="view-toggle-btn" onclick="setTab('agenda')">${t('goTo')}</button>
+    </div>
+    ${totalItems ? `
+      <div style="font-size:.8rem;color:#7a6f52;margin-top:8px;">${doneItems}/${totalItems} ${t('hoyAgendaLine')} · ${pct}%</div>
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%;"></div></div>
+    ` : `<div class="empty" style="padding:6px 0 0;">${t('hoyNoAgenda')}</div>`}
+  </div>`;
+
+  let rotCard = '';
+  if(activeRot.length){
+    rotCard = `<div class="card">
+      <h2 style="font-size:.95rem;">${t('rotacionesTitle')}</h2>
+      <div class="chip-row">${activeRot.map(r=>`<div class="chip" onclick="setTab('rotaciones')" style="cursor:pointer;"><b>${r.tarea}:</b> ${r.personas[r.turnoActual]||'—'}</div>`).join('')}</div>
+    </div>`;
+  }
+
+  let consejoCard = '';
+  if(state.roles.includes('obispado')){
+    const last = state.consejo.history.length ? state.consejo.history[state.consejo.history.length-1] : null;
+    consejoCard = `<div class="card">
+      <div class="card-header-row">
+        <div><h2 style="font-size:.95rem;">${t('consejoTitle')}</h2></div>
+        <button class="view-toggle-btn" onclick="setTab('consejo')">${t('goTo')}</button>
+      </div>
+      ${last
+        ? `<div style="font-size:.85rem;margin-top:6px;">${fmtDateOnly(last.date)} — ${last.items.filter(it=>it.done).length}/${last.items.length} ${t('presentesOf')}</div>`
+        : `<div class="empty" style="padding:6px 0 0;">${t('hoyConsejoEmpty')}</div>`}
+    </div>`;
+  }
+
+  return hero + statGrid + feedCard + agendaCard + rotCard + consejoCard;
+}
+
+/* ---- Reporte ---- */
+function renderReporte(){
+  const now = new Date();
+  const inMonth = d => new Date(d).getMonth()===now.getMonth() && new Date(d).getFullYear()===now.getFullYear();
+  const activeTareas = state.tareas.filter(x=>!x.deleted);
+  const activeMinFamilies = getAllActiveFamilies();
+  const done = activeTareas.filter(x=>x.done), pending = activeTareas.filter(x=>!x.done);
+  const attn = activeMinFamilies.filter(f=>{ const d=daysSince(f.lastContact); return d===null||d>30; });
+  const minutasMonth = state.minutas.filter(m=>!m.deleted && inMonth(m.date));
+  const lines = [
+    `${t('reportHeader')} — ${now.toLocaleDateString(state.lang==='es'?'es-ES':'en-US',{month:'long',year:'numeric'})}`, '',
+    `${t('reportMinutas')} ${minutasMonth.length}`, '',
+    `${t('reportTasksDone')} ${done.length?'':'—'}`, ...done.map(x=>`  \u2713 ${x.who}: ${x.what}`), '',
+    `${t('reportTasksPending')} ${pending.length?'':'—'}`, ...pending.map(x=>`  · ${x.who}: ${x.what}`), ''
+  ];
+  if(activeMinFamilies.length){
+    lines.push(`${t('reportMinAttn')} ${attn.length?'':'—'}`, ...attn.map(f=>`  ! ${f.compNames} \u2192 ${f.family}`), '');
+  }
+  const activeEnt = state.entrevistas.filter(x=>!x.deleted && x.estado!=='hecha');
+  if(state.entrevistas.some(x=>!x.deleted)){
+    lines.push(`${t('reportEntrevistas')} ${activeEnt.length?'':'—'}`,
+      ...activeEnt.map(x=>`  · ${x.nombre} — ${x.motivo}${x.fecha?' ('+fmtDateOnly(x.fecha)+')':''}`), '');
+  }
+  const clasesSinMaestro = state.clases.filter(c=>!c.deleted && !(c.maestro && c.maestro.trim()));
+  if(state.clases.some(c=>!c.deleted)){
+    lines.push(`${t('reportClasesSinMaestro')} ${clasesSinMaestro.length?'':'—'}`,
+      ...clasesSinMaestro.map(c=>`  · ${c.clase}`), '');
+  }
+  if(state.consejo && state.consejo.history.length){
+    const last = state.consejo.history[state.consejo.history.length-1];
+    const presentCount = last.items.filter(it=>it.done).length;
+    lines.push(`${t('reportConsejo')} ${fmtDateOnly(last.date)} — ${presentCount}/${last.items.length} ${t('presentesOf')}`, '');
+  }
+  const activeRot = state.rotaciones.filter(r=>!r.deleted);
+  if(activeRot.length){
+    lines.push(`${t('reportRotaciones')}`,
+      ...activeRot.map(r=>`  · ${r.tarea}: ${r.personas[r.turnoActual]||'—'}`), '');
+  }
+  const text = lines.join('\n');
+  return `<div class="card">
+    <h2>${t('reportTitle')}</h2><div class="card-sub">${t('reportSub')}</div>
+    <div class="report-box" id="reportBox">${text}</div>
+    <button class="copy-btn" onclick="copyReport()">${t('copyReport')}</button>
+  </div>`;
+}
+function copyReport(){
+  navigator.clipboard.writeText(document.getElementById('reportBox').innerText).then(()=>toast(t('copied')));
+}
+
+const PANELS = {
+  hoy:renderHoy,
+  agenda:renderAgenda, minutas:renderMinutas, tareas:renderTareas,
+  llamamientos:renderLlamamientos, rotaciones:renderRotaciones,
+  ministracion:renderMinistracion, entrevistas:renderEntrevistas, consejo:renderConsejo, clases:renderClases,
+  reporte:renderReporte
+};
+const TAB_LABELS = {
+  hoy:'tabHoy',
+  agenda:'tabAgenda', minutas:'tabMinutas', tareas:'tabTareas',
+  llamamientos:'tabLlamamientos', rotaciones:'tabRotaciones',
+  ministracion:'tabMin', entrevistas:'tabEntrevistas', consejo:'tabConsejo', clases:'tabClases',
+  reporte:'tabReporte'
+};
+function activeTabs(){
+  const specific = state.roles.map(r=>ROLES[r] && ROLES[r].tab).filter(Boolean);
+  const uniqueSpecific = [...new Set(specific)];
+  return ['hoy','agenda','minutas','tareas','llamamientos','rotaciones', ...uniqueSpecific, 'reporte'];
+}
+function setTab(name){ currentTab=name; render(); }
+
+function render(){
+  document.getElementById('appTitle').textContent = t('title');
+  document.getElementById('appSub').textContent = state.roles.length
+    ? state.roles.map(r=>t('role_'+r)).join(' · ')
+    : t('subNoRole');
+  document.getElementById('btnLang').textContent = state.lang==='es' ? 'EN' : 'ES';
+  document.getElementById('privacyNote').innerHTML = `<b>${state.lang==='es'?'Privacidad:':'Privacy:'}</b> ${t('privacy')}`;
+  document.getElementById('footerNote').textContent = t('footNote');
+
+  const pending = state.tareas.filter(x=>!x.deleted && !x.done).length;
+  const attn = getAllActiveFamilies().filter(f=>{ const d=daysSince(f.lastContact); return d===null||d>30; }).length;
+  const now = new Date();
+  const minutasMonth = state.minutas.filter(m=>!m.deleted && new Date(m.date).getMonth()===now.getMonth() && new Date(m.date).getFullYear()===now.getFullYear()).length;
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat-pill"><b>${pending}</b> ${t('statAsign')}</div>
+    <div class="stat-pill"><b>${minutasMonth}</b> ${t('statMin')}</div>
+    ${attn>0 ? `<div class="stat-pill alert"><b>${attn}</b> ${t('statAlert')}</div>` : ''}
+  `;
+
+  const tabs = activeTabs();
+  if(!tabs.includes(currentTab)) currentTab = 'hoy';
+  document.getElementById('tabs').innerHTML = tabs.map(name=>
+    `<button class="view-toggle-btn ${currentTab===name?'active':''}" onclick="setTab('${name}')">${t(TAB_LABELS[name])}</button>`
+  ).join('');
+
+  document.getElementById('panelHost').innerHTML = PANELS[currentTab]();
+}
+
+
+
+function mountInternal(){
+document.getElementById('btnRoles').addEventListener('click', openRoleModal);
+document.getElementById('btnLang').addEventListener('click', toggleLang);
+loadState();
+}
+
+return { mount: function(container){ container.innerHTML = SECRETARIO_BODY_HTML; mountInternal(); } };
+})();
+
+
+/* ---- Shell logic ---- */
+const SETTINGS_KEY = 'shared-settings';
+let sharedSettings = { unidad:'barrio', nombreUnidad:'', estacaDistrito:'', mision:'', obispoPresidente:'', liderMisional:'' };
+
+async function loadSharedSettings(){
+  try{ const r = await window.storage.get(SETTINGS_KEY, false); if(r) sharedSettings = JSON.parse(r.value); }
+  catch(e){ /* sin ajustes guardados aún */ }
+}
+async function saveSharedSettings(){
+  try{ await window.storage.set(SETTINGS_KEY, JSON.stringify(sharedSettings), false); }
+  catch(e){ console.error('Error guardando ajustes', e); }
+}
+
+function renderInicio(){
+  const host = document.getElementById('moduleHost');
+  const unidadLabel = sharedSettings.nombreUnidad
+    ? `${sharedSettings.unidad==='barrio'?'Barrio':'Rama'} ${sharedSettings.nombreUnidad}`
+    : 'Configura tu unidad en Ajustes';
+  host.innerHTML = `
+    <div class="hub-wrap">
+      <div class="dash-hero">
+        <div class="date">${unidadLabel}</div>
+        <h2>Centro de Servicio</h2>
+        <div class="sub">Todas tus herramientas de llamamiento, en un solo lugar.</div>
+      </div>
+      <div class="hub-card" onclick="switchModule('secretario')">
+        <div class="hub-icon">📋</div>
+        <div><div class="hub-title">Cuaderno del Secretario</div>
+        <div class="hub-desc">Agenda, minutas, asignaciones, ministración, entrevistas y más.</div></div>
+      </div>
+      <div class="hub-card disabled" onclick="switchModule('gather')">
+        <div class="hub-icon">🧭</div>
+        <div><div class="hub-title">Gather</div>
+        <div class="hub-desc">Seguimiento de personas en enseñanza — líder misional.</div>
+        <span class="hub-tag">Falta integrar</span></div>
+      </div>
+      <div class="hub-card disabled" onclick="switchModule('bautizapp')">
+        <div class="hub-icon">💧</div>
+        <div><div class="hub-title">BautizApp</div>
+        <div class="hub-desc">Generador de programas e invitaciones de bautismo.</div>
+        <span class="hub-tag">Falta integrar</span></div>
+      </div>
+    </div>`;
+}
+
+function renderAjustes(){
+  const host = document.getElementById('moduleHost');
+  const s = sharedSettings;
+  host.innerHTML = `
+    <div class="hub-wrap">
+      <div class="card">
+        <h2>Ajustes compartidos</h2>
+        <div class="card-sub">Esta información la usarán todas las herramientas del Centro de Servicio.</div>
+        <div class="field-row">
+          <div class="field"><label>Tipo de unidad</label>
+            <select id="setUnidad" style="width:100%;padding:9px 10px;border-radius:7px;border:1px solid var(--line);background:var(--linen);font-family:'Karla',sans-serif;font-size:.85rem;">
+              <option value="barrio" ${s.unidad==='barrio'?'selected':''}>Barrio</option>
+              <option value="rama" ${s.unidad==='rama'?'selected':''}>Rama</option>
+            </select>
+          </div>
+          <div class="field"><label>Nombre</label><input id="setNombreUnidad" value="${(s.nombreUnidad||'').replace(/"/g,'&quot;')}" placeholder="Sexto"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Estaca / Distrito</label><input id="setEstaca" value="${(s.estacaDistrito||'').replace(/"/g,'&quot;')}" placeholder="San Francisco California"></div>
+          <div class="field"><label>Misión</label><input id="setMision" value="${(s.mision||'').replace(/"/g,'&quot;')}" placeholder="Opcional"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Obispo / Presidente</label><input id="setObispo" value="${(s.obispoPresidente||'').replace(/"/g,'&quot;')}"></div>
+          <div class="field"><label>Líder misional</label><input id="setLider" value="${(s.liderMisional||'').replace(/"/g,'&quot;')}"></div>
+        </div>
+        <button class="btn-full" onclick="saveAjustesForm()">Guardar ajustes</button>
+      </div>
+    </div>`;
+}
+function saveAjustesForm(){
+  sharedSettings.unidad = document.getElementById('setUnidad').value;
+  sharedSettings.nombreUnidad = document.getElementById('setNombreUnidad').value.trim();
+  sharedSettings.estacaDistrito = document.getElementById('setEstaca').value.trim();
+  sharedSettings.mision = document.getElementById('setMision').value.trim();
+  sharedSettings.obispoPresidente = document.getElementById('setObispo').value.trim();
+  sharedSettings.liderMisional = document.getElementById('setLider').value.trim();
+  saveSharedSettings();
+  switchModule('inicio');
+}
+
+function renderPlaceholder(name, desc){
+  document.getElementById('moduleHost').innerHTML = `
+    <div class="hub-wrap">
+      <div class="card">
+        <h2>${name}</h2>
+        <div class="card-sub">${desc}</div>
+        <div class="upload-box">Sube aquí el archivo .html de ${name} en el chat y lo integro como módulo completo, igual que se hizo con el Cuaderno del Secretario.</div>
+      </div>
+    </div>`;
+}
+
+function switchModule(name){
+  document.querySelectorAll('.shell-tab').forEach(b=>b.classList.toggle('active', b.dataset.mod===name));
+  const host = document.getElementById('moduleHost');
+  host.innerHTML = '';
+  if(name==='inicio') renderInicio();
+  else if(name==='secretario') SecretarioModule.mount(host);
+  else if(name==='gather') renderPlaceholder('Gather', 'Seguimiento de personas en enseñanza para tu llamamiento de líder misional.');
+  else if(name==='bautizapp') renderPlaceholder('BautizApp', 'Generador de programas e invitaciones de bautismo.');
+  else if(name==='ajustes') renderAjustes();
+}
+document.querySelectorAll('.shell-tab').forEach(b=>b.addEventListener('click', ()=>switchModule(b.dataset.mod)));
+loadSharedSettings().then(()=>switchModule('inicio'));
+</script>
+</body>
+</html>
